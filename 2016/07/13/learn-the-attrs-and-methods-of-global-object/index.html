@@ -1,0 +1,767 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="javascript," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="1. 常量属性1.1 Infinity是一个数值，表示无群大。 1.2 NaN 该属性的初始值就是NaN，和Number.NaN的值一样。 等号运算符（==和===）不能用来判断一个是是否是NaN。必须使用Number.isNaN()或isNaN()函数。">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="介绍js全局对象的常量属性&amp;方法">
+<meta property="og:url" content="https://elephantme.github.io/2016/07/13/learn-the-attrs-and-methods-of-global-object/index.html">
+<meta property="og:site_name" content="Dong&#39;s Blog">
+<meta property="og:description" content="1. 常量属性1.1 Infinity是一个数值，表示无群大。 1.2 NaN 该属性的初始值就是NaN，和Number.NaN的值一样。 等号运算符（==和===）不能用来判断一个是是否是NaN。必须使用Number.isNaN()或isNaN()函数。">
+<meta property="og:updated_time" content="2017-07-09T03:41:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="介绍js全局对象的常量属性&amp;方法">
+<meta name="twitter:description" content="1. 常量属性1.1 Infinity是一个数值，表示无群大。 1.2 NaN 该属性的初始值就是NaN，和Number.NaN的值一样。 等号运算符（==和===）不能用来判断一个是是否是NaN。必须使用Number.isNaN()或isNaN()函数。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://elephantme.github.io/2016/07/13/learn-the-attrs-and-methods-of-global-object/"/>
+
+
+
+
+
+  <title>介绍js全局对象的常量属性&方法 | Dong's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?1a71164e95b5296508c0d1492855a5a0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Dong's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">路漫漫其修远兮，吾将上下而求索</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2016/07/13/learn-the-attrs-and-methods-of-global-object/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dong's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">介绍js全局对象的常量属性&方法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-13T00:00:00+08:00">
+                2016-07-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/javascript/" itemprop="url" rel="index">
+                    <span itemprop="name">javascript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-常量属性"><a href="#1-常量属性" class="headerlink" title="1. 常量属性"></a>1. 常量属性</h2><h3 id="1-1-Infinity"><a href="#1-1-Infinity" class="headerlink" title="1.1 Infinity"></a>1.1 Infinity</h3><p>是一个数值，表示无群大。</p>
+<h3 id="1-2-NaN"><a href="#1-2-NaN" class="headerlink" title="1.2 NaN"></a>1.2 NaN</h3><ol>
+<li>该属性的初始值就是NaN，和Number.NaN的值一样。</li>
+<li>等号运算符（==和===）不能用来判断一个是是否是NaN。必须使用Number.isNaN()或isNaN()函数。</li>
+</ol>
+<a id="more"></a>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="literal">NaN</span> === <span class="literal">NaN</span>; <span class="comment">//false</span></div><div class="line"><span class="built_in">Number</span>.NaN === <span class="literal">NaN</span>; <span class="comment">//false</span></div><div class="line"><span class="built_in">isNaN</span>(<span class="literal">NaN</span>); <span class="comment">//true</span></div><div class="line"><span class="built_in">isNaN</span>(<span class="built_in">Number</span>.NaN); <span class="comment">//true</span></div></pre></td></tr></table></figure>
+<h3 id="1-3-undefined"><a href="#1-3-undefined" class="headerlink" title="1.3 undefined"></a>1.3 undefined</h3><ol>
+<li>window下的一个属性，并且该属性的属性值也为undefined。</li>
+<li>一个未初始化的变量的值为undefined。</li>
+<li>一个没有传入实参的形参变量的值为undefined。</li>
+<li>一个函数什么都没返回，则该函数默认返回undefined。</li>
+<li>可以用严格相等（===）运算符来判断一个值是否是undefined。</li>
+<li>另外还可以使用typeof来判断，变量没有申明的情况下，也只能用它来判断了。</li>
+</ol>
+<h3 id="1-4-null（字面量）"><a href="#1-4-null（字面量）" class="headerlink" title="1.4 null（字面量）"></a>1.4 null（字面量）</h3><ol>
+<li>null是一个字面量，表示空值，并不是全局变量的属性。</li>
+<li>null 与 undefined 的不同点</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typeof</span> <span class="literal">null</span>;      <span class="comment">//object</span></div><div class="line"><span class="keyword">typeof</span> <span class="literal">undefined</span>; <span class="comment">//undefined</span></div><div class="line"><span class="literal">null</span> === <span class="literal">undefined</span>; <span class="comment">//false</span></div><div class="line"><span class="literal">null</span> == <span class="literal">undefined</span>;  <span class="comment">//true</span></div></pre></td></tr></table></figure>
+<h2 id="2-方法属性"><a href="#2-方法属性" class="headerlink" title="2. 方法属性"></a>2. 方法属性</h2><h3 id="2-1-eval-string"><a href="#2-1-eval-string" class="headerlink" title="2.1 eval(string)"></a>2.1 eval(string)</h3><ol>
+<li>string为js的表达式，或者声明。</li>
+<li>如果参数是表达式，则会求值，如果是一个或者多个声明，那么eval会执行声明。</li>
+<li>参数如果不是字符串，则会将参数原封不动的返回。</li>
+</ol>
+<h3 id="2-2-uneval-object"><a href="#2-2-uneval-object" class="headerlink" title="2.2 uneval(object)"></a>2.2 uneval(object)</h3><p>函数创建一个代表对象的源代码的字符串。</p>
+<h3 id="2-3-isFinite-testValue"><a href="#2-3-isFinite-testValue" class="headerlink" title="2.3 isFinite(testValue)"></a>2.3 isFinite(testValue)</h3><ol>
+<li>用来判断传入的参数是否是一个有限数值。</li>
+<li>如果参数是 NaN，正无穷大或者负无穷大，会返回false，其他返回 true</li>
+</ol>
+<h3 id="2-4-isNaN-testValue"><a href="#2-4-isNaN-testValue" class="headerlink" title="2.4 isNaN(testValue)"></a>2.4 isNaN(testValue)</h3><ol>
+<li>用来判断一个值是否是NaN。</li>
+<li>如果isNaN函数的参数不是Number类型, isNaN()会首先尝试将这个参数转换为数值。</li>
+</ol>
+<h3 id="2-5-parseFloat-string"><a href="#2-5-parseFloat-string" class="headerlink" title="2.5 parseFloat(string)"></a>2.5 parseFloat(string)</h3><ol>
+<li>方法将参数中指定的字符串解析成为一个浮点数字并返回。</li>
+<li>在解析过程中遇到了正负号(+或-),数字(0-9),小数点,或者科学记数法中的指数(e或E)以外的字符,则它会忽略该字符以及之后的所有字符,返回当前已经解析到的浮点数。</li>
+<li>如果参数字符串的第一个字符不能被解析成为数字,则parseFloat返回NaN。</li>
+</ol>
+<h3 id="2-6-parseInt-string-radix"><a href="#2-6-parseInt-string-radix" class="headerlink" title="2.6 parseInt(string,radix)"></a>2.6 parseInt(string,radix)</h3><ol>
+<li>将给定的字符串以指定基数（radix/base）解析成为整数。</li>
+<li>如果 parseInt 遇到了不属于radix参数所指定的基数中的字符那么该字符和其后的字符都将被忽略。接着返回已经解析的整数部分。parseInt 将截取整数部分。开头和结尾的空白符允许存在，会被忽略。</li>
+</ol>
+<p>下面例子都返回15</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">parseInt</span>(<span class="string">"F"</span>, <span class="number">16</span>); </div><div class="line"><span class="built_in">parseInt</span>(<span class="string">"17"</span>, <span class="number">8</span>);</div><div class="line"><span class="built_in">parseInt</span>(<span class="string">"15"</span>, <span class="number">10</span>);</div><div class="line"><span class="built_in">parseInt</span>(<span class="number">15.99</span>, <span class="number">10</span>);</div><div class="line"><span class="built_in">parseInt</span>(<span class="string">"FXX123"</span>, <span class="number">16</span>);</div><div class="line"><span class="built_in">parseInt</span>(<span class="string">"1111"</span>, <span class="number">2</span>);</div><div class="line"><span class="built_in">parseInt</span>(<span class="string">"15*3"</span>, <span class="number">10</span>);</div><div class="line"><span class="built_in">parseInt</span>(<span class="string">"12"</span>, <span class="number">13</span>);</div></pre></td></tr></table></figure>
+<h3 id="2-7-decodeURI-encodedURI"><a href="#2-7-decodeURI-encodedURI" class="headerlink" title="2.7 decodeURI(encodedURI)"></a>2.7 decodeURI(encodedURI)</h3><p>用于解码由 encodeURI 方法或者其它类似方法编码的统一资源标识符（URI）</p>
+<h3 id="2-8-decodeURIComponent-encodedURI"><a href="#2-8-decodeURIComponent-encodedURI" class="headerlink" title="2.8 decodeURIComponent(encodedURI)"></a>2.8 decodeURIComponent(encodedURI)</h3><p>用于解码由 encodeURIComponent 方法或者其它类似方法编码的部分统一资源标识符（URI）。</p>
+<h3 id="2-9-encodeURI-URI"><a href="#2-9-encodeURI-URI" class="headerlink" title="2.9 encodeURI(URI)"></a>2.9 encodeURI(URI)</h3><ol>
+<li>是对统一资源标识符（URI）进行编码的方法。</li>
+<li>encodeURI 自身无法产生能适用于HTTP GET 或 POST 请求的URI，例如对于 XMLHTTPRequests, 因为 “&amp;”, “+”, 和 “=” 不会被编码，然而在 GET 和 POST 请求中它们是特殊字符。然而encodeURIComponent这个方法会对这些字符编码。</li>
+</ol>
+<h3 id="2-10-encodeURIComponent-URI"><a href="#2-10-encodeURIComponent-URI" class="headerlink" title="2.10 encodeURIComponent(URI)"></a>2.10 encodeURIComponent(URI)</h3><h3 id="2-11-escape-已废弃"><a href="#2-11-escape-已废弃" class="headerlink" title="2.11 escape() 已废弃"></a>2.11 escape() 已废弃</h3><p>生成新的由十六进制转移序列替换的字符串. 使用 encodeURI 或 encodeURIComponent 代替</p>
+<h3 id="2-12-unescapt-已废弃"><a href="#2-12-unescapt-已废弃" class="headerlink" title="2.12 unescapt() 已废弃"></a>2.12 unescapt() 已废弃</h3>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/10/learn-how-to-inherit-in-javascript/" rel="next" title="探索Javascript中的继承">
+                <i class="fa fa-chevron-left"></i> 探索Javascript中的继承
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/20/javascript-event/" rel="prev" title="JavaScript中的事件机制">
+                JavaScript中的事件机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Dong" />
+          <p class="site-author-name" itemprop="name">Dong</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-常量属性"><span class="nav-number">1.</span> <span class="nav-text">1. 常量属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Infinity"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 Infinity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-NaN"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 NaN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-undefined"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 undefined</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-null（字面量）"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 null（字面量）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-方法属性"><span class="nav-number">2.</span> <span class="nav-text">2. 方法属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-eval-string"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 eval(string)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-uneval-object"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 uneval(object)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-isFinite-testValue"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 isFinite(testValue)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-isNaN-testValue"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 isNaN(testValue)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-parseFloat-string"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 parseFloat(string)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-parseInt-string-radix"><span class="nav-number">2.6.</span> <span class="nav-text">2.6 parseInt(string,radix)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-decodeURI-encodedURI"><span class="nav-number">2.7.</span> <span class="nav-text">2.7 decodeURI(encodedURI)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8-decodeURIComponent-encodedURI"><span class="nav-number">2.8.</span> <span class="nav-text">2.8 decodeURIComponent(encodedURI)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-encodeURI-URI"><span class="nav-number">2.9.</span> <span class="nav-text">2.9 encodeURI(URI)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-10-encodeURIComponent-URI"><span class="nav-number">2.10.</span> <span class="nav-text">2.10 encodeURIComponent(URI)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-11-escape-已废弃"><span class="nav-number">2.11.</span> <span class="nav-text">2.11 escape() 已废弃</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-12-unescapt-已废弃"><span class="nav-number">2.12.</span> <span class="nav-text">2.12 unescapt() 已废弃</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dong</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,749 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="angular,gulp," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="1. 项目结构">
+<meta name="keywords" content="angular,gulp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Angular、RequireJs、Gulp构建单页面应用">
+<meta property="og:url" content="https://elephantme.github.io/2016/07/25/angular-requirejs-gulp-demo/index.html">
+<meta property="og:site_name" content="Dong&#39;s Blog">
+<meta property="og:description" content="1. 项目结构">
+<meta property="og:image" content="https://elephantme.github.io/images/angular-requirejs-demo.png">
+<meta property="og:updated_time" content="2017-07-09T03:41:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Angular、RequireJs、Gulp构建单页面应用">
+<meta name="twitter:description" content="1. 项目结构">
+<meta name="twitter:image" content="https://elephantme.github.io/images/angular-requirejs-demo.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://elephantme.github.io/2016/07/25/angular-requirejs-gulp-demo/"/>
+
+
+
+
+
+  <title>使用Angular、RequireJs、Gulp构建单页面应用 | Dong's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?1a71164e95b5296508c0d1492855a5a0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Dong's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">路漫漫其修远兮，吾将上下而求索</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2016/07/25/angular-requirejs-gulp-demo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dong's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用Angular、RequireJs、Gulp构建单页面应用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-25T00:00:00+08:00">
+                2016-07-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/angular/" itemprop="url" rel="index">
+                    <span itemprop="name">angular</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-项目结构"><a href="#1-项目结构" class="headerlink" title="1. 项目结构"></a>1. 项目结构</h2><p><img src="/images/angular-requirejs-demo.png" alt="angular项目结构"></p>
+<a id="more"></a>
+<p><a href="https://github.com/elephantme/angular-requirejs-demo" target="_blank">该项目可前往github上查看</a></p>
+<p>如果项目业务逻辑比较多，还是建议使用功能来划分，如user文件下会有controller、service、factory等。这样在编码时不需要到处找文件，后期维护也较容易一些。</p>
+<h2 id="2-结构讲解"><a href="#2-结构讲解" class="headerlink" title="2. 结构讲解"></a>2. 结构讲解</h2><p>下面是程序的入口main.html</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Angular RequireJs Demo<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">  <span class="comment">&lt;!-- build:css css/main.css --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"css/a.css"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"css/b.css"</span>&gt;</span></div><div class="line">  <span class="comment">&lt;!-- endbuild --&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span>Angular+RequireJs+Gulp Demo<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">header</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#/view1"</span>&gt;</span>view1<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#/view2"</span>&gt;</span>view2<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">header</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span> <span class="attr">ng-view</span>&gt;</span></div><div class="line">    </div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"bower_components/requirejs/require.js"</span> <span class="attr">data-main</span>=<span class="string">"src/main"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>其中script标签中的data-main指定了RequireJs先要执行的文件，也就是src/main.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">require</span>.config(&#123;</div><div class="line">  <span class="attr">paths</span>: &#123;</div><div class="line">    <span class="string">'angular'</span>: <span class="string">'../bower_components/angular/angular'</span>,</div><div class="line">    <span class="string">'angular-route'</span>: <span class="string">'../bower_components/angular-route/angular-route'</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">shim</span>: &#123;</div><div class="line">    <span class="string">'angular'</span>: &#123;</div><div class="line">      <span class="attr">exports</span>: <span class="string">'angular'</span></div><div class="line">    &#125;,</div><div class="line">    <span class="string">'angular-route'</span>: &#123;</div><div class="line">      <span class="attr">deps</span>: [<span class="string">'angular'</span>]</div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">deps</span>: [<span class="string">'./bootstrap'</span>]</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>这里是RequireJs的一些配置，其中paths就是定义别名。shim是处理那些不是AMD规范的包。deps是要执行的模块，即bootstrap.js。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">define([</div><div class="line">  <span class="string">'require'</span>, </div><div class="line">  <span class="string">'angular'</span>,</div><div class="line">  <span class="string">'app'</span>,</div><div class="line">  <span class="string">'route'</span></div><div class="line">], <span class="function"><span class="keyword">function</span>(<span class="params">require, angular</span>)</span>&#123;</div><div class="line">  angular.bootstrap(<span class="built_in">document</span>, [<span class="string">'elephant'</span>]);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>该模块需要依赖angular、app、route这些模块，他们都加载好以后，angular启动名为elephant的app，该app的作用域是整个document。</p>
+<p>到这里我们知道必须要创建一个名为elephant的module，他是怎么和项目中的controller、service等建立起联系的呢？请看<code>angular.module(&#39;moduleName&#39;,[])</code>，该api中第二个参数的意思就是该module依赖的其他module，所以我们可以把所有的controller放到一个叫app.controllers的module中，service放到一个叫app.services的模块中，将他们依赖到elephant这个模块就可以了。 下面看一下app.js：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">define([</div><div class="line">  <span class="string">'angular'</span>,</div><div class="line">  <span class="string">'angular-route'</span>,</div><div class="line">  <span class="string">'controller/all'</span>,</div><div class="line">  <span class="string">'service/all'</span></div><div class="line">], <span class="function"><span class="keyword">function</span>(<span class="params"></span></span></div><div class="line">  angular</div><div class="line">)&#123;</div><div class="line">  <span class="keyword">var</span> app = angular.module(<span class="string">'elephant'</span>, [</div><div class="line">    <span class="string">'app.controllers'</span>,</div><div class="line">    <span class="string">'app.services'</span>,</div><div class="line">    <span class="string">'ngRoute'</span></div><div class="line">  ]);</div><div class="line"></div><div class="line">  <span class="keyword">return</span> app;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>可以看出该模块依赖controller/all、service/all，他们分别是angular单独的module——app.controllers和app.services，看一下service/all.js就明白了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">define(</div><div class="line">  [<span class="string">'angular'</span>, <span class="string">'./bookService'</span>, <span class="string">'./userService'</span>], </div><div class="line">  <span class="function"><span class="keyword">function</span>(<span class="params">angular, bookService, userService</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> all = angular.module(<span class="string">'app.services'</span>, []);</div><div class="line"></div><div class="line">    all.service(&#123;</div><div class="line">      <span class="string">'BookService'</span>: bookService,</div><div class="line">      <span class="string">'UserService'</span>: userService</div><div class="line">    &#125;);</div><div class="line">    </div><div class="line">  &#125;</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>通过这种方式，也可以将filter、directive等依赖到elephant中。</p>
+<p>下面看一下route，本例中使用angular自带的angular-route插件，他需要单独下载。另外社区中ui-router也非常火热。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">define([<span class="string">'app'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">app</span>)</span>&#123;</div><div class="line">  app.config([<span class="string">'$routeProvider'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$routeProvider</span>)</span>&#123;</div><div class="line">    $routeProvider.when(<span class="string">'/view1'</span>, &#123;</div><div class="line">      <span class="attr">templateUrl</span>: <span class="string">'template/view1.html'</span>,</div><div class="line">      <span class="attr">controller</span>: <span class="string">'Ctrl01'</span></div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    $routeProvider.when(<span class="string">'/view2'</span>, &#123;</div><div class="line">      <span class="attr">templateUrl</span>: <span class="string">'template/view2.html'</span>,</div><div class="line">      <span class="attr">controller</span>: <span class="string">'Ctrl02'</span></div><div class="line">    &#125;);</div><div class="line">    </div><div class="line">  &#125;]);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>他只依赖app，给app增加config来实现路由功能的，就是将我们的路由配置告诉$routeProvider这个provider。</p>
+<p>到这里整个项目架构已完成，下面介绍下gulp这款构建工具。</p>
+<h2 id="3-gulp脚本"><a href="#3-gulp脚本" class="headerlink" title="3. gulp脚本"></a>3. gulp脚本</h2><p>目前gulp已经完全取代了grunt，说明他有一定的优势。个人觉得gulp的优势有：</p>
+<ol>
+<li>代码优于配置 grunt是基于配置文件，而gulp是直接编码。Spring走的就是摒弃复杂的配置文件回归代码的路线。</li>
+<li>直观，gulp的任务更紧凑；而grunt只是配置了一个个子任务，需要看registerTask中任务的顺序才能明白要做的事情。</li>
+</ol>
+<p>下面看一下gulpfile脚本吧</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">* 1.将css文件合并压缩后放到dist/css下</div><div class="line">* 2.将template文件压缩后放到dist/template下</div><div class="line">* 3.将src下js文件合并压缩后放到dist/js下</div><div class="line">* 4.将main.html文件使用cssmin，jsmin替换后，并压缩，然后放到dist下</div><div class="line">* 5.最后别忘了将requirejs源文件移过去</div><div class="line">*/</div><div class="line"></div><div class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>),</div><div class="line">  concat = <span class="built_in">require</span>(<span class="string">'gulp-concat'</span>),</div><div class="line">  cleanCss = <span class="built_in">require</span>(<span class="string">'gulp-clean-css'</span>),</div><div class="line">  htmlmin = <span class="built_in">require</span>(<span class="string">'gulp-htmlmin'</span>),</div><div class="line">  uglify = <span class="built_in">require</span>(<span class="string">"gulp-uglify"</span>),</div><div class="line">  clean = <span class="built_in">require</span>(<span class="string">'gulp-clean'</span>),</div><div class="line">  usemin = <span class="built_in">require</span>(<span class="string">'gulp-usemin'</span>),</div><div class="line">  replace = <span class="built_in">require</span>(<span class="string">'gulp-regex-replace'</span>),</div><div class="line">  requirejsOptimize = <span class="built_in">require</span>(<span class="string">'gulp-requirejs-optimize'</span>);</div><div class="line"></div><div class="line">gulp.task(<span class="string">'clean'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> gulp.src(<span class="string">'./dist'</span>)</div><div class="line">    .pipe(clean());</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// 执行第一步</span></div><div class="line">gulp.task(<span class="string">'css'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> gulp.src(<span class="string">'./css/*.css'</span>)</div><div class="line">    .pipe(concat(<span class="string">'main.css'</span>))</div><div class="line">    .pipe(cleanCss())</div><div class="line">    .pipe(gulp.dest(<span class="string">'./dist/css/'</span>));</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// 执行第二步</span></div><div class="line">gulp.task(<span class="string">'template'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> gulp.src(<span class="string">'./template/*.html'</span>)</div><div class="line">    .pipe(htmlmin(&#123;<span class="attr">collapseWhitespace</span>: <span class="literal">true</span>&#125;))</div><div class="line">    .pipe(gulp.dest(<span class="string">'./dist/template/'</span>));</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// 合并压缩js文件</span></div><div class="line">gulp.task(<span class="string">'js'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> gulp.src(<span class="string">'./src/main.js'</span>)</div><div class="line">    .pipe(requirejsOptimize(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">      <span class="keyword">return</span> &#123;</div><div class="line">        <span class="attr">mainConfigFile</span>: <span class="string">'./src/main.js'</span></div><div class="line">      &#125;</div><div class="line">    &#125;))</div><div class="line">    .pipe(uglify())</div><div class="line">    .pipe(concat(<span class="string">"main.min.js"</span>))</div><div class="line">    .pipe(gulp.dest(<span class="string">'./dist/js'</span>));</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// 处理main.html</span></div><div class="line">gulp.task(<span class="string">'main'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> gulp.src(<span class="string">'./main.html'</span>)</div><div class="line">    .pipe(usemin())</div><div class="line">    .pipe(replace(&#123;</div><div class="line">      <span class="attr">regex</span>: <span class="string">'src="bower_components/requirejs/require.js" data-main="src/main"'</span>,</div><div class="line">      <span class="attr">replace</span>: <span class="string">'src="js/require.js" data-main="js/main.min"'</span></div><div class="line">    &#125;))</div><div class="line">    .pipe(htmlmin())</div><div class="line">    .pipe(gulp.dest(<span class="string">'./dist'</span>))</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// 处理requirejs</span></div><div class="line">gulp.task(<span class="string">'requirejs'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> gulp.src(<span class="string">'./bower_components/requirejs/require.js'</span>)</div><div class="line">    .pipe(uglify())</div><div class="line">    .pipe(gulp.dest(<span class="string">'./dist/js'</span>))</div><div class="line">&#125;);</div><div class="line"></div><div class="line">gulp.task(<span class="string">'default'</span>, [<span class="string">'clean'</span>], <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  gulp.start(<span class="string">'css'</span>, <span class="string">'template'</span>, <span class="string">'js'</span>, <span class="string">'main'</span>, <span class="string">'requirejs'</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>gulp中src是输入，然后pipe可以接各种处理脚本，最后dest是输出。是不是很类似shell脚本，如：<code>grep src | clean | concat &gt; dest</code>。</p>
+<p>每一个task都是集中处理一个任务，通过gulp.start()来指定任务执行的顺序。可以看看grunt任务的配置，很明显没有gulp直观。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grunt.registerTask(<span class="string">'prod'</span>,[<span class="string">'clean'</span>, <span class="string">'copy'</span>, <span class="string">'usemin'</span>, <span class="string">'regex-replace'</span>, <span class="string">'htmlmin'</span>, <span class="string">'requirejs'</span>]);</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/angular/" rel="tag"># angular</a>
+          
+            <a href="/tags/gulp/" rel="tag"># gulp</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/21/data-structure/" rel="next" title="数据结构">
+                <i class="fa fa-chevron-left"></i> 数据结构
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/30/vue-webpack-todolist/" rel="prev" title="使用vue、webpack实现简单todolist">
+                使用vue、webpack实现简单todolist <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Dong" />
+          <p class="site-author-name" itemprop="name">Dong</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-项目结构"><span class="nav-number">1.</span> <span class="nav-text">1. 项目结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-结构讲解"><span class="nav-number">2.</span> <span class="nav-text">2. 结构讲解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-gulp脚本"><span class="nav-number">3.</span> <span class="nav-text">3. gulp脚本</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dong</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
