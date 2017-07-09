@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="迭代协议 ECMAScript2015的几个补充，并不是新的内置或语法，而是协议。这些协议可以被任何遵循某些约定的对象来实现。它有两个协议：可迭代协议和迭代器协议。  可迭代协议用来定义javascript的对象是否可以被迭代，为了变成可迭代对象，该对象必须实现@@iterator方法，意思是这个对象（或者原型链上）必须有一个名字是Symbol.iterator属性。 迭代器协议该迭代器协议定义了">
+<meta name="description" content="迭代协议 ECMAScript2015的几个补充，并不是新的内置或语法，而是协议。这些协议可以被任何遵循某些约定的对象来实现。它有两个协议：可迭代协议和迭代器协议。">
 <meta name="keywords" content="ES6">
 <meta property="og:type" content="article">
 <meta property="og:title" content="学习ES6中的迭代器">
 <meta property="og:url" content="https://elephantme.github.io/2017/07/09/iterator-in-es6/index.html">
 <meta property="og:site_name" content="Dong&#39;s Blog">
-<meta property="og:description" content="迭代协议 ECMAScript2015的几个补充，并不是新的内置或语法，而是协议。这些协议可以被任何遵循某些约定的对象来实现。它有两个协议：可迭代协议和迭代器协议。  可迭代协议用来定义javascript的对象是否可以被迭代，为了变成可迭代对象，该对象必须实现@@iterator方法，意思是这个对象（或者原型链上）必须有一个名字是Symbol.iterator属性。 迭代器协议该迭代器协议定义了">
-<meta property="og:updated_time" content="2017-07-09T06:17:25.000Z">
+<meta property="og:description" content="迭代协议 ECMAScript2015的几个补充，并不是新的内置或语法，而是协议。这些协议可以被任何遵循某些约定的对象来实现。它有两个协议：可迭代协议和迭代器协议。">
+<meta property="og:updated_time" content="2017-07-09T06:23:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="学习ES6中的迭代器">
-<meta name="twitter:description" content="迭代协议 ECMAScript2015的几个补充，并不是新的内置或语法，而是协议。这些协议可以被任何遵循某些约定的对象来实现。它有两个协议：可迭代协议和迭代器协议。  可迭代协议用来定义javascript的对象是否可以被迭代，为了变成可迭代对象，该对象必须实现@@iterator方法，意思是这个对象（或者原型链上）必须有一个名字是Symbol.iterator属性。 迭代器协议该迭代器协议定义了">
+<meta name="twitter:description" content="迭代协议 ECMAScript2015的几个补充，并不是新的内置或语法，而是协议。这些协议可以被任何遵循某些约定的对象来实现。它有两个协议：可迭代协议和迭代器协议。">
 
 
 
@@ -355,6 +355,7 @@
         <h2 id="迭代协议"><a href="#迭代协议" class="headerlink" title="迭代协议"></a>迭代协议</h2><blockquote>
 <p>ECMAScript2015的几个补充，并不是新的内置或语法，而是协议。这些协议可以被任何遵循某些约定的对象来实现。它有两个协议：可迭代协议和迭代器协议。</p>
 </blockquote>
+<a id="more"></a>
 <h3 id="可迭代协议"><a href="#可迭代协议" class="headerlink" title="可迭代协议"></a>可迭代协议</h3><p>用来定义javascript的对象是否可以被迭代，为了变成可迭代对象，该对象必须实现@@iterator方法，意思是这个对象（或者原型链上）必须有一个名字是Symbol.iterator属性。</p>
 <h3 id="迭代器协议"><a href="#迭代器协议" class="headerlink" title="迭代器协议"></a>迭代器协议</h3><p>该迭代器协议定义了一种标准的方式来产生一个有限或无限序列的值。<br>当一个对象被认为是一个迭代器时，它实现了一个 next() 的方法并且拥有以下含义：<br>返回一个对象的无参函数，被返回对象拥有两个属性：</p>
 <ol>
