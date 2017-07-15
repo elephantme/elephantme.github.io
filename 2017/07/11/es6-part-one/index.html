@@ -1,0 +1,870 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ES6," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="本篇整理了《深入理解ES6》书中第一章至第四章的主要知识点。">
+<meta name="keywords" content="ES6">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解ES6（第一章~第四章）">
+<meta property="og:url" content="https://elephantme.github.io/2017/07/11/es6-part-one/index.html">
+<meta property="og:site_name" content="Dong&#39;s Blog">
+<meta property="og:description" content="本篇整理了《深入理解ES6》书中第一章至第四章的主要知识点。">
+<meta property="og:updated_time" content="2017-07-15T16:33:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解ES6（第一章~第四章）">
+<meta name="twitter:description" content="本篇整理了《深入理解ES6》书中第一章至第四章的主要知识点。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://elephantme.github.io/2017/07/11/es6-part-one/"/>
+
+
+
+
+
+  <title>深入理解ES6（第一章~第四章） | Dong's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?1a71164e95b5296508c0d1492855a5a0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Dong's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">路漫漫其修远兮，吾将上下而求索</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2017/07/11/es6-part-one/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dong's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入理解ES6（第一章~第四章）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-11T23:26:39+08:00">
+                2017-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ES6/" itemprop="url" rel="index">
+                    <span itemprop="name">ES6</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本篇整理了《深入理解ES6》书中第一章至第四章的主要知识点。</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="块级作用域绑定"><a href="#块级作用域绑定" class="headerlink" title="块级作用域绑定"></a>块级作用域绑定</h1><h2 id="var声明及变量提升（Hoisting）机制"><a href="#var声明及变量提升（Hoisting）机制" class="headerlink" title="var声明及变量提升（Hoisting）机制"></a>var声明及变量提升（Hoisting）机制</h2><p>通过关键字var声明的变量，无论是在哪声明的，都会被提升到当前作用域的顶部，而初始化操作依旧留在原处执行。</p>
+<h2 id="块级声明"><a href="#块级声明" class="headerlink" title="块级声明"></a>块级声明</h2><p>块级声明用于声明在指定块的作用域之外无法访问的变量。块级作用域（词法作用域）存在于：</p>
+<ul>
+<li>函数内部</li>
+<li>块中（{}之间的区域）</li>
+</ul>
+<h3 id="let声明"><a href="#let声明" class="headerlink" title="let声明"></a>let声明</h3><p>声明变量<br>变量作用域限定在当前代码块中<br>声明不会被提升<br>同一作用域中不能重复声明</p>
+<h3 id="const声明"><a href="#const声明" class="headerlink" title="const声明"></a>const声明</h3><p>声明常量，一旦设定变不可更改（意味着不能重新赋值，如果声明的是对象，对象属性值是可以修改的）<br>所声明的常量必须进行初始化<br>声明不会被提升<br>同一作用域中不能重复声明</p>
+<h3 id="临时死区（Temporal-Dead-Zone）"><a href="#临时死区（Temporal-Dead-Zone）" class="headerlink" title="临时死区（Temporal Dead Zone）"></a>临时死区（Temporal Dead Zone）</h3><p>Javascript 引擎在扫描代码发现变量声明时，要么将它们提升至作用域顶部（遇到 var 声明），要么将声明放到TDZ中（遇到 let 和 const 声明）。访问TDZ中的变量会触发运行时错误。只有执行过变量声明语句后，变量才会从TDZ中移出，然后方可正常访问。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(condition)&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">typeof</span> value); <span class="comment">// 引用错误！</span></div><div class="line">  <span class="keyword">let</span> value = <span class="string">"a"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>是因为value在TDZ中，即使不易出错的typeof也无法阻挡引擎抛出错误。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> value); <span class="comment">// "undefined"</span></div><div class="line"><span class="keyword">if</span>(condition)&#123;</div><div class="line">  <span class="keyword">let</span> value = <span class="string">"a"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>是因为typeof value是在TDZ外执行的。</p>
+<h2 id="循环中的块作用域绑定"><a href="#循环中的块作用域绑定" class="headerlink" title="循环中的块作用域绑定"></a>循环中的块作用域绑定</h2><h3 id="循环中的let声明"><a href="#循环中的let声明" class="headerlink" title="循环中的let声明"></a>循环中的let声明</h3><p>每次迭代循环都创建一个新变量，并以之前迭代中同名变量的值将其初始化。而 var 每次迭代同时共享着变量。还是把经典的例子拿出来吧</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> funcs = [];</div><div class="line"></div><div class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++)&#123;</div><div class="line">  funcs.push(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(i);</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">funcs.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">func</span>)</span>&#123;</div><div class="line">  func();  <span class="comment">// 输出10次10</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>上面例子只需把var 修改为 let 就可以像期望的那样运行，输出 0,1,2直到9</p>
+<h3 id="循环中const声明"><a href="#循环中const声明" class="headerlink" title="循环中const声明"></a>循环中const声明</h3><p>普通for循环中，可以在初始化变量时使用const，但是更改这个变量的值就会抛出错误。<br>在for-in 或 for-of 中使用const的行为与使用let一致，是因为每次迭代不会修改已有绑定，而是创建一个新绑定。</p>
+<h2 id="全局作用域绑定"><a href="#全局作用域绑定" class="headerlink" title="全局作用域绑定"></a>全局作用域绑定</h2><p>var被用于全局作用域时，它会创建一个新的全局变量作为全局对象（浏览器环境中的window对象）的属性。因此它会覆盖全局变量。</p>
+<p>如果在全局作用域中使用let或者const，会在全局作用域下创建一个新的绑定，但该绑定不会添加为全局对象的属性。因此不会覆盖全局变量。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> <span class="built_in">RegExp</span> = <span class="string">"hello"</span>;</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.RegExp); <span class="comment">//hello</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> <span class="built_in">RegExp</span> = <span class="string">"hello"</span>;</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">RegExp</span>);        <span class="comment">//"hello"</span></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.RegExp); <span class="comment">//undefined</span></div></pre></td></tr></table></figure>
+<h2 id="块级绑定最佳实践的进化"><a href="#块级绑定最佳实践的进化" class="headerlink" title="块级绑定最佳实践的进化"></a>块级绑定最佳实践的进化</h2><p>默认使用const，只有确实需要改变变量的值时使用let。因为大部分变量的值在初始化不应再改变，而预料外的变量值的改变是很多bug的源头。</p>
+<h1 id="字符串和正则表达式"><a href="#字符串和正则表达式" class="headerlink" title="字符串和正则表达式"></a>字符串和正则表达式</h1><h2 id="更好的Unicode支持"><a href="#更好的Unicode支持" class="headerlink" title="更好的Unicode支持"></a>更好的Unicode支持</h2><p>Javascript字符串一直基于16位字符编码（UTF-16）进行构建。每16位的序列是一个编码单元（code unit），代表一个字符。length、chartAt()等字符串属性和方法都是基于这种编码单元构造的。在过去16位足以包含任何字符，知道Unicode引入扩展字符集，编码规则才不得不进行变更。</p>
+<h3 id="UTF-16码位"><a href="#UTF-16码位" class="headerlink" title="UTF-16码位"></a>UTF-16码位</h3><p>在UTF-16中，前2^16个码位均以16位的编码单元表示，这个范围被称作基本多文种平面（BMP）。超出这个 范围的码位则要归属于某个辅助平面，其中的码位仅用16位就无法表示了。为此，UTF-16引入了代理对，其规定用两个16位编码单元表示一个码位。这也就是说字符串里的字符有两种，一种是由一个编码单元16位表示的<strong>BMP字符</strong>，另一种是由两个编码单元32位表示的<strong>辅助平面字符</strong>。</p>
+<p>在ES5中，所有字符串的操作都是机缘16位编码单元。如果采用同样的方式处理包含代理对的UTF-16位编码字符，得到的结果可能与预期不符</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> text = <span class="string">"𠮷"</span>;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(text.length);               <span class="comment">// 2</span></div><div class="line"><span class="built_in">console</span>.log(<span class="regexp">/^.$/</span>.test(text));          <span class="comment">// false</span></div><div class="line"><span class="built_in">console</span>.log(text.charAt(<span class="number">0</span>));            <span class="comment">// ""</span></div><div class="line"><span class="built_in">console</span>.log(text.charAt(<span class="number">1</span>));            <span class="comment">// ""</span></div><div class="line"><span class="built_in">console</span>.log(text.charCodeAt(<span class="number">0</span>));        <span class="comment">// 55362</span></div><div class="line"><span class="built_in">console</span>.log(text.charCodeAt(<span class="number">1</span>));        <span class="comment">// 55271</span></div></pre></td></tr></table></figure>
+<p>Unicode字符”𠮷”是通过代理对来表示的，因此，这个示例中的JavaScript字符串操作将其视为两个16位字符。这就意味着：</p>
+<ul>
+<li>变量text的长度事实上是1，但它的length属性值却为2。</li>
+<li>变量text被判定为两个字符，因此匹配单一字符的正则表达式会失效。</li>
+<li>前后两个16位的编码单元都不表示任何可打印的字符，因此charAt()方法不会返回合法的字符串。</li>
+<li>chartCodeAt()方法同样不能正确地识别字符。它会返回每个16位编码单元对应的数值，在ES5中，这是你最接近真实值得结果了。</li>
+</ul>
+<p>ES6中增加了专门针对代理对的功能。</p>
+<h3 id="codePointAt-方法"><a href="#codePointAt-方法" class="headerlink" title="codePointAt()方法"></a>codePointAt()方法</h3><p>参数为编码单元位置，而非字符位置作为参数，返回与字符串中给定位置对应的码位，即一个整数值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> text = <span class="string">"𠮷a"</span>;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(text.charCodeAt(<span class="number">0</span>));        <span class="comment">// 55362</span></div><div class="line"><span class="built_in">console</span>.log(text.charCodeAt(<span class="number">1</span>));        <span class="comment">// 55271</span></div><div class="line"><span class="built_in">console</span>.log(text.charCodeAt(<span class="number">2</span>));        <span class="comment">// 55362</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(text.codePointAt(<span class="number">0</span>));        <span class="comment">// 55362</span></div><div class="line"><span class="built_in">console</span>.log(text.codePointAt(<span class="number">1</span>));        <span class="comment">// 55271</span></div><div class="line"><span class="built_in">console</span>.log(text.codePointAt(<span class="number">2</span>));        <span class="comment">// 55362</span></div></pre></td></tr></table></figure>
+<p>上面代码中，JavaScript将”𠮷a”视为三个字符，codePointAt方法在第一个字符上，正确地识别了“𠮷”，返回了它的十进制码点134071（即十六进制的20BB7）。在第二个字符（即“𠮷”的后两个字节）和第三个字符“a”上，codePointAt方法的结果与charCodeAt方法相同。</p>
+<p>检测一个字符占用的编码单元数量，最简单的方法是调用codePointAt方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">is32Bit</span>(<span class="params">c</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> c.codePointAt(<span class="number">0</span>) &gt; <span class="number">0xFFFF</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(is32Bit(<span class="string">"𠮷"</span>));   <span class="comment">// true</span></div><div class="line"><span class="built_in">console</span>.log(is32Bit(<span class="string">"a"</span>));    <span class="comment">// false</span></div></pre></td></tr></table></figure>
+<h3 id="String-fromCodePoint-方法"><a href="#String-fromCodePoint-方法" class="headerlink" title="String.fromCodePoint()方法"></a>String.fromCodePoint()方法</h3><p>ES5提供String.fromCharCode方法，用于从码点返回对应字符，但是这个方法不能识别32位的UTF-16字符（Unicode编号大于0xFFFF）。</p>
+<p>ES6提供了String.fromCodePoint方法，可以识别0xFFFF的字符，弥补了String.fromCharCode方法的不足。在作用上，正好与codePointAt方法相反。</p>
+<h3 id="normalize-方法"><a href="#normalize-方法" class="headerlink" title="normalize()方法"></a>normalize()方法</h3><p>许多欧洲语言有语调符号和重音符号。为了表示它们，Unicode提供了两种方法。一种是直接提供带重音符号的字符，比如Ǒ（\u01D1）。另一种是提供合成符号（combining character），即原字符与重音符号的合成，两个字符合成一个字符，比如O（\u004F）和ˇ（\u030C）合成Ǒ（\u004F\u030C）。</p>
+<p>这两种表示方法，在视觉和语义上都等价，但是JavaScript不能识别。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">'\u01D1'</span>===<span class="string">'\u004F\u030C'</span>);  <span class="comment">//false</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'\u01D1'</span>.length);            <span class="comment">// 1</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'\u004F\u030C'</span>.length);      <span class="comment">// 2</span></div></pre></td></tr></table></figure>
+<p>上面代码表示，JavaScript将合成字符视为两个字符，导致两种表示方法不相等。</p>
+<p>ES6提供字符串实例的normalize()方法，用来将字符的不同表示方法统一为同样的形式，这称为Unicode正规化。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">'\u01D1'</span>.normalize() === <span class="string">'\u004F\u030C'</span>.normalize());  <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<p>normalize方法可以接受一个参数来指定normalize的方式，参数的四个可选值如下。</p>
+<ul>
+<li>NFC，默认参数，表示“标准等价合成”（Normalization Form Canonical Composition），返回多个简单字符的合成字符。所谓“标准等价”指的是视觉和语义上的等价。</li>
+<li>NFD，表示“标准等价分解”（Normalization Form Canonical Decomposition），即在标准等价的前提下，返回合成字符分解的多个简单字符。</li>
+<li>NFKC，表示“兼容等价合成”（Normalization Form Compatibility Composition），返回合成字符。所谓“兼容等价”指的是语义上存在等价，但视觉上不等价，比如“囍”和“喜喜”。（这只是用来举例，normalize方法不能识别中文。）</li>
+<li>NFKD，表示“兼容等价分解”（Normalization Form Compatibility Decomposition），即在兼容等价的前提下，返回合成字符分解的多个简单字符。</li>
+</ul>
+<p>不过，normalize方法目前不能识别三个或三个以上字符的合成。这种情况下，还是只能使用正则表达式，通过Unicode编号区间判断。</p>
+<h3 id="正则表达式-u-修饰符"><a href="#正则表达式-u-修饰符" class="headerlink" title="正则表达式 u 修饰符"></a>正则表达式 u 修饰符</h3><p>当一个正则表达式添加了u修饰符，它就从编码单元操作模式切换为字符模式，如此一来正则表达式就不会视代理对为两个字符，从而完全按照预期正常运行。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> text = <span class="string">"𠮷"</span>;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="regexp">/^.$/</span>.test(text));  <span class="comment">// false</span></div><div class="line"><span class="built_in">console</span>.log(<span class="regexp">/^.$/u</span>.test(text)); <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<h2 id="其它字符串变更"><a href="#其它字符串变更" class="headerlink" title="其它字符串变更"></a>其它字符串变更</h2><h3 id="字符串中的子串识别"><a href="#字符串中的子串识别" class="headerlink" title="字符串中的子串识别"></a>字符串中的子串识别</h3><ul>
+<li>includes()方法</li>
+<li>startsWith()方法</li>
+<li>endsWith()方法</li>
+</ul>
+<p>第一个参数指定要搜索的文本；第二个参数是可选的，指定一个开始搜索的位置的索引值。</p>
+<h3 id="repeat-方法"><a href="#repeat-方法" class="headerlink" title="repeat()方法"></a>repeat()方法</h3><h2 id="其它正则表达式语法变更"><a href="#其它正则表达式语法变更" class="headerlink" title="其它正则表达式语法变更"></a>其它正则表达式语法变更</h2><h3 id="y-修饰符"><a href="#y-修饰符" class="headerlink" title="y 修饰符"></a>y 修饰符</h3><p>它会影响正则表达式搜索过程中的sticky属性，当在字符串中开始字符串匹配时，它会通知搜索从正则表达式的lastIndex属性开始进行，如果在指定位置没能成功匹配，则停止继续匹配。</p>
+<h3 id="正则表达式的复制"><a href="#正则表达式的复制" class="headerlink" title="正则表达式的复制"></a>正则表达式的复制</h3><p>ES5中，可以通过给RegExp构造函数传递正则表达式作为参数来复制这个正则表达式，就像这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> re1 = <span class="regexp">/ab/i</span>,</div><div class="line">    re2 = <span class="keyword">new</span> <span class="built_in">RegExp</span>(re1);</div></pre></td></tr></table></figure>
+<p>此处的变量re2只是re1的一份拷贝，如果给RegExp构造函数提供第二个参数，为正则表达式指定一个修饰符，则代码无法运行。</p>
+<p>ES6中修改了这个行为，可以通过第二个参数来修改其修饰符了。</p>
+<h3 id="flags属性"><a href="#flags属性" class="headerlink" title="flags属性"></a>flags属性</h3><p>ES5获取flag的方式</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFlags</span>(<span class="params">re</span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> text = rs.toString();</div><div class="line">  <span class="keyword">return</span> text.substring(text.lastIndexOf(<span class="string">"/"</span>) + <span class="number">1</span>, text.length);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> re = <span class="regexp">/ab/g</span>;</div><div class="line"><span class="built_in">console</span>.log(getFlags(re));    <span class="comment">// "g"</span></div></pre></td></tr></table></figure>
+<p>为了使获取修饰符更加简单，ES6新增了一个flags属性；</p>
+<h2 id="模板字面量"><a href="#模板字面量" class="headerlink" title="模板字面量"></a>模板字面量</h2><h3 id="基础语法"><a href="#基础语法" class="headerlink" title="基础语法"></a>基础语法</h3><p>使用反撇号（`）来定义字符串</p>
+<h3 id="多行字符串"><a href="#多行字符串" class="headerlink" title="多行字符串"></a>多行字符串</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> message = <span class="string">`hello</span></div><div class="line"> world`;</div><div class="line"><span class="built_in">console</span>.log(message);   <span class="comment">// "hello"</span></div><div class="line">                        <span class="comment">// " world"</span></div></pre></td></tr></table></figure>
+<h3 id="字符串占位符"><a href="#字符串占位符" class="headerlink" title="字符串占位符"></a>字符串占位符</h3><p>占位符由一个左侧的${和右侧的}符号组成，中间可以包含任意的Javascript表达式。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> name = <span class="string">"Nicholas"</span>,</div><div class="line">  message = <span class="string">"Hello, $&#123;name&#125;"</span>;</div></pre></td></tr></table></figure>
+<h3 id="标签模板"><a href="#标签模板" class="headerlink" title="标签模板"></a>标签模板</h3><p>标签指的是在模板字面量第一个反撇号前方标注的字符串，就像这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> message = tag<span class="string">`Hello World`</span>;</div></pre></td></tr></table></figure>
+<p><strong>定义标签</strong></p>
+<p>标签可以是一个函数，调用时传入加工过的模板字面量各部分数据，但必须结合每个部分来创建结果。第一个参数是一个数组，包含JavaScript解释过后的字面量字符串，它之后的所有参数都是每一个占位符的解释值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">tag</span>(<span class="params">arr, ...values</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(arr);         <span class="comment">// ["1+2=", "。"]</span></div><div class="line">  <span class="built_in">console</span>.log(values);      <span class="comment">// [3]</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> a = <span class="number">1</span>,</div><div class="line">    b = <span class="number">2</span>;</div><div class="line"></div><div class="line">tag<span class="string">`1+2=<span class="subst">$&#123;a+b&#125;</span>。`</span>;</div></pre></td></tr></table></figure>
+<p>可以通过arr和values来重新组合回结果。</p>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="函数形参的默认值"><a href="#函数形参的默认值" class="headerlink" title="函数形参的默认值"></a>函数形参的默认值</h2><h3 id="ES6语法"><a href="#ES6语法" class="headerlink" title="ES6语法"></a>ES6语法</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">url, timeout = <span class="number">2000</span></span>)</span>&#123;&#125;</div></pre></td></tr></table></figure>
+<h3 id="默认参数值对arguments对象的影响"><a href="#默认参数值对arguments对象的影响" class="headerlink" title="默认参数值对arguments对象的影响"></a>默认参数值对arguments对象的影响</h3><ol>
+<li>ES5非严格模式，函数命名参数的变化会体现在arguments对象上。</li>
+<li>ES5严格模式，取消了该行为，无论参数怎么变化，arguments不再随之改变。</li>
+<li>ES6中，如果使用了默认参数值，则无论是否显示定义严格模式，arguments对象的行为都将与ES5严格模式下保持一致。</li>
+</ol>
+<h3 id="默认参数表达式"><a href="#默认参数表达式" class="headerlink" title="默认参数表达式"></a>默认参数表达式</h3><p>默认参数是在函数调用时求值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params">url, timeout = getDefaultValue(</span>))</span>&#123;&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">m</span>(<span class="params">first, second = first</span>)</span>&#123;&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">n</span>(<span class="params">first, second = getValue(first</span>))</span>&#123;&#125;</div></pre></td></tr></table></figure>
+<p>在引用默认值的时候，只允许引用前面的参数值，即先定义的参数不能访问后定义的参数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">m</span>(<span class="params">first = second, second</span>)</span>&#123;&#125; <span class="comment">// 抛出错误</span></div></pre></td></tr></table></figure>
+<h2 id="处理无命名参数"><a href="#处理无命名参数" class="headerlink" title="处理无命名参数"></a>处理无命名参数</h2><h3 id="不定参数"><a href="#不定参数" class="headerlink" title="不定参数"></a>不定参数</h3><ol>
+<li>在参数前加<code>...</code>，表示这是一个不定参数。</li>
+<li>每个函数最多可以声明一个不定参数，而且必须放在所有参数末尾。</li>
+<li>不定参数不能用于对象字面量setter之中。</li>
+</ol>
+<h2 id="增强的Function构造函数"><a href="#增强的Function构造函数" class="headerlink" title="增强的Function构造函数"></a>增强的Function构造函数</h2><p>支持在创建函数时定义默认参数和不定参数。</p>
+<h2 id="展开运算符"><a href="#展开运算符" class="headerlink" title="展开运算符"></a>展开运算符</h2><p>与不定参最相似的是展开运算符。不定参数将多个参数整合为一个数组，而展开运算符刚好相反，可以将一个数组打散作为各自独立的参数传入函数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> values = [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Math</span>.max(...values)); <span class="comment">// 4</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> vals = [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Math</span>.max.apply(<span class="built_in">Math</span>, vals)); <span class="comment">// 4</span></div></pre></td></tr></table></figure>
+<h2 id="name属性"><a href="#name属性" class="headerlink" title="name属性"></a>name属性</h2><p>ES6中所有函数的name属性都有一个合适的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">doSomething</span>(<span class="params"></span>)</span>&#123;&#125;                <span class="comment">// "doSomething"</span></div><div class="line">doSomething.bind()                      <span class="comment">// "bound doSomething"</span></div><div class="line"><span class="keyword">var</span> doAnotherThing = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;       <span class="comment">// "doAnotherThing"</span></div><div class="line"><span class="keyword">var</span> person = &#123;</div><div class="line">  get firstName()&#123;&#125;,                    <span class="comment">// "get firstName"</span></div><div class="line">  sayName: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;                 <span class="comment">// "sayName"</span></div><div class="line">&#125;;</div><div class="line"><span class="keyword">new</span> <span class="built_in">Function</span>()                          <span class="comment">// "anonymous"</span></div></pre></td></tr></table></figure>
+<h2 id="明确函数的多重用途"><a href="#明确函数的多重用途" class="headerlink" title="明确函数的多重用途"></a>明确函数的多重用途</h2><p>ES5及早期版本中的函数具有多重功能，可以结合<code>new</code>使用，函数内的this 将指向一个新对象，函数最终会返回这个新对象。</p>
+<p>ES6中在js函数中定义了两个不同的内部方法：[[Call]]和[[Construct]]。当通过 new 关键字调用函数时，执行的是[[Construct]]函数，它负责创建一个被称作实例的新对象，然后再执行函数体，并将this绑定到该实例上；如果不是通过 new 关键字调用函数，则执行[[Call]]函数，从而直接执行代码中的函数体。具有[[Construct]]方法的函数被统称为构造函数。切记，并不是所有函数都有[[Construct]]方法，例如箭头函数。</p>
+<h3 id="ES5中判断函数被调用的方法"><a href="#ES5中判断函数被调用的方法" class="headerlink" title="ES5中判断函数被调用的方法"></a>ES5中判断函数被调用的方法</h3><p>想确定一个函数是否通过 new 关键字被调用，最流行的方法是使用 instanceof。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>)</span>&#123;</div><div class="line">  <span class="keyword">if</span>(<span class="keyword">this</span> <span class="keyword">instanceof</span> Person)&#123;</div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">  &#125;<span class="keyword">else</span>&#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"必须通过new关键字来调用"</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通常来讲是没什么大问题的，但是并不可靠。可以通过<code>Person.call()</code>调用成功。</p>
+<h3 id="原属性-new-target"><a href="#原属性-new-target" class="headerlink" title="原属性 new.target"></a>原属性 new.target</h3><p>为了解决是否通过 new 关键字调用的问题，ES6引入了new.target这个元属性。 元属性是指非对象的属性，其可以提供非对象目标的补充信息，如new。当调用函数的[[Construct]]方法时，new.target被赋值为new操作符的目标，通常是新创建的实例；如果调用[[Call]]，new.target为undefined。所以可以通过检测new.target来确认是否通过new 关键字来调用的函数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>)</span>&#123;</div><div class="line">  <span class="keyword">if</span>(<span class="keyword">typeof</span> <span class="keyword">new</span>.target !== <span class="string">"undefined"</span>)&#123;</div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">  &#125;<span class="keyword">else</span>&#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"必须通过new关键字来调用"</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="块级函数"><a href="#块级函数" class="headerlink" title="块级函数"></a>块级函数</h2><ol>
+<li>ES5严格模式下在代码块内部声明函数会报错；</li>
+<li>ES6代码块定义的函数视为一个块级声明，从而可以定一个该函数的代码块内访问和调用。块级函数会提升至顶部（严格模式下），在非严格模式下，不是提升至代码块顶部，而是提升至外围函数或全局作用域的顶部。</li>
+</ol>
+<h2 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h2><p>它与传统函数有些许不同，如下：</p>
+<ol>
+<li>没有this、super、arguments和new.target绑定。</li>
+<li>不能通过new 关键字调用。</li>
+<li>没有原型。</li>
+<li>不可以改变this的绑定。</li>
+<li>不支持arguments对象。</li>
+<li>不支持重复的命名参数</li>
+</ol>
+<p>常用的一些写法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> reflect = <span class="function"><span class="params">value</span> =&gt;</span> value;</div><div class="line"><span class="keyword">let</span> sum = <span class="function">(<span class="params">num1, num2</span>) =&gt;</span> num1 + num2;</div><div class="line"><span class="keyword">let</span> getName = <span class="function"><span class="params">()</span> =&gt;</span> <span class="string">"zhangsan"</span>;</div><div class="line"><span class="keyword">let</span> sum = <span class="function">(<span class="params">num1, num2</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> num1 + num2;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">let</span> doNothing = <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;;</div><div class="line"><span class="keyword">let</span> getPerson = <span class="function"><span class="params">id</span> =&gt;</span> (&#123;<span class="attr">id</span>: id, <span class="attr">name</span>: <span class="string">"zhangsan"</span>&#125;);</div></pre></td></tr></table></figure>
+<h2 id="尾部调用优化"><a href="#尾部调用优化" class="headerlink" title="尾部调用优化"></a>尾部调用优化</h2><p>在ES5的引擎中，尾调用的实现与其他函数调用的实现类似：创建一个新的栈帧，将其推入调用栈来表示函数调用。也就是说，在循环调用中，每一个未用完的栈帧都会保存在内存中。</p>
+<h3 id="ES6尾调用优化"><a href="#ES6尾调用优化" class="headerlink" title="ES6尾调用优化"></a>ES6尾调用优化</h3><p>如果满足以下条件，尾调用不再创建新的栈帧，而是清除并重用当前栈帧。</p>
+<ol>
+<li>尾调用不访问当前栈帧变量。</li>
+<li>在函数内部，尾调用时最后一条语句。</li>
+<li>尾调用的结果作为函数值返回。</li>
+</ol>
+<h1 id="扩展对象的功能性"><a href="#扩展对象的功能性" class="headerlink" title="扩展对象的功能性"></a>扩展对象的功能性</h1><h2 id="对象字面量语法扩展"><a href="#对象字面量语法扩展" class="headerlink" title="对象字面量语法扩展"></a>对象字面量语法扩展</h2><h3 id="属性初始值的简写"><a href="#属性初始值的简写" class="headerlink" title="属性初始值的简写"></a>属性初始值的简写</h3><p>当一个对象的属性与本地变量同名时，不必再写冒号和值，只需要只写属性名即可。</p>
+<h3 id="对象方法的简写"><a href="#对象方法的简写" class="headerlink" title="对象方法的简写"></a>对象方法的简写</h3><p>可以省略冒号和function关键字。</p>
+<h3 id="可计算属性名"><a href="#可计算属性名" class="headerlink" title="可计算属性名"></a>可计算属性名</h3><p>使用方括号表示的属性名是可计算的，它的内容将被求值并被最终转化为一个字符串。</p>
+<h2 id="新增方法"><a href="#新增方法" class="headerlink" title="新增方法"></a>新增方法</h2><h3 id="Object-is"><a href="#Object-is" class="headerlink" title="Object.is()"></a>Object.is()</h3><p>该方法用来弥补全等 === 运算符的不准确，举个例子 +0 和 -0在Javascript引擎中表示为两个完全不同的实体，而如果使用 === 比较得到的是 true；同样， NaN === NaN 的返回值为false，需要使用isNaN()方法才可以正确检测NaN。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">+<span class="number">0</span> == <span class="number">-0</span>;             <span class="comment">// true</span></div><div class="line">+<span class="number">0</span> === <span class="number">-0</span>;            <span class="comment">// true</span></div><div class="line"><span class="built_in">Object</span>.is(+<span class="number">0</span>, <span class="number">-0</span>);    <span class="comment">// false</span></div><div class="line"></div><div class="line"><span class="literal">NaN</span> == <span class="literal">NaN</span>;           <span class="comment">// false</span></div><div class="line"><span class="literal">NaN</span> === <span class="literal">NaN</span>;          <span class="comment">// false</span></div><div class="line"><span class="built_in">Object</span>.is(<span class="literal">NaN</span>, <span class="literal">NaN</span>);  <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<h3 id="Object-assign"><a href="#Object-assign" class="headerlink" title="Object.assign()"></a>Object.assign()</h3><p>该方法可以接受任意数量的源对象，第一个参数为接收对象，会将其它对象复制到接收对象上。不能复制提供者的访问器属性。</p>
+<h2 id="重复的对象字面量属性"><a href="#重复的对象字面量属性" class="headerlink" title="重复的对象字面量属性"></a>重复的对象字面量属性</h2><p>ES5严格模式加入了字面量重复属性的校验，当同时存在多个同名属性是会抛出错误。而在ES6中重复属性检查被移除了，不管是不是严格模式，重复属性出现时，只保留最后一个。</p>
+<h2 id="自有属性枚举顺序"><a href="#自有属性枚举顺序" class="headerlink" title="自有属性枚举顺序"></a>自有属性枚举顺序</h2><p>ES5中未定义对象属性的枚举顺序，由Javascript引擎厂商自行解决。ES6严格规定了对象的自有属性被枚举时的返回属性，这会影响到Object.getOwnPropertyName()方法及Reflect.ownKeys返回属性的方式，Object.assign()方法处理属性的顺序也将随之改变。</p>
+<p>自有属性枚举顺序的基本规则是：</p>
+<ol>
+<li>所有数字键按升序排序；</li>
+<li>所有字符串按照它们被加入对象的顺序排序；</li>
+<li>所有symbol键按照它们被加入对象的顺序排序。</li>
+</ol>
+<h2 id="增强对象原型"><a href="#增强对象原型" class="headerlink" title="增强对象原型"></a>增强对象原型</h2><h3 id="改变对象的原型"><a href="#改变对象的原型" class="headerlink" title="改变对象的原型"></a>改变对象的原型</h3><p>ES6添加了Object.setPrototypeOf()方法来改变对象的原型。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> person = &#123;</div><div class="line">  getGreeting()&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"Hello"</span>;</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">let</span> dog = &#123;</div><div class="line">  getGreeting()&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"Woof"</span>;</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 以person对象为原型</span></div><div class="line"><span class="keyword">let</span> friend = <span class="built_in">Object</span>.create(person);</div><div class="line"><span class="built_in">console</span>.log(friend.getGreeting());      <span class="comment">// "Hello"</span></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getPrototypeOf(friend) === person) <span class="comment">// true</span></div><div class="line"></div><div class="line"><span class="comment">// 将原型设置为dog</span></div><div class="line"><span class="built_in">Object</span>.setPrototypeOf(friend, dog)</div><div class="line"><span class="built_in">console</span>.log(friend.getGreeting());      <span class="comment">// "Woof"</span></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getPrototypeOf(friend) === dog)  <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<h3 id="简化原型访问的Super引用"><a href="#简化原型访问的Super引用" class="headerlink" title="简化原型访问的Super引用"></a>简化原型访问的Super引用</h3><p>ES6引入了<code>Super</code>引用的特性，使用它可以更便捷地访问对象原型。举个例子，如果你想重写对象实例的方法，又需要调用与它同名的原型方法，在ES5中可以这样实现：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> person = &#123;</div><div class="line">  getGreeting()&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"Hello"</span>;</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">let</span> dog = &#123;</div><div class="line">  getGreeting()&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"Woof"</span>;</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">let</span> friend = &#123;</div><div class="line">  getGreeting()&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">Object</span>.getPrototypeOf(<span class="keyword">this</span>).getGreenting.call(<span class="keyword">this</span>) + <span class="string">", hi!"</span>;</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 以person对象为原型</span></div><div class="line"><span class="built_in">Object</span>.setPrototypeOf(friend, person);</div><div class="line"><span class="built_in">console</span>.log(friend.getGreeting());      <span class="comment">// "Hello, hi!"</span></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getPrototypeOf(friend) === person) <span class="comment">// true</span></div><div class="line"></div><div class="line"><span class="comment">// 将原型设置为dog</span></div><div class="line"><span class="built_in">Object</span>.setPrototypeOf(friend, dog);</div><div class="line"><span class="built_in">console</span>.log(friend.getGreeting());      <span class="comment">// "Woof, hi!"</span></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getPrototypeOf(friend) === dog)  <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<p>通过<code>Object.getPrototypeOf()</code>方法和call来实现调用原型上的方法，略显复杂。ES6引入<code>super</code>来解决该问题，Super引用相当于指向对象原型的指针，实际上也就是Object.getPrototypeOf(this)的值。于是，可以简化上面getGreeting方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> friend = &#123;</div><div class="line">  getGreeting()&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">super</span>.getGreenting() + <span class="string">", hi!"</span>;</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="正式的方法定义"><a href="#正式的方法定义" class="headerlink" title="正式的方法定义"></a>正式的方法定义</h3><p>ES6中正式将方法定义为一个函数，它会有一个内部的[[HomeObject]]属性来容纳这个方法从属的对象。请思考以下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> person = &#123;</div><div class="line">  <span class="comment">// 是方法</span></div><div class="line">  getGreeting()&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"Hello"</span>;</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 不是方法</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">share</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="string">"hi"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>getGreeting()方法的[[HomeObject]]属性值为person。share没有明确定义[[HomeObject]]属性。</p>
+<p>Super的所有引用都通过[[HomeObject]]属性来确定后续的运行过程。第一步是在[[HomeObject]]属性上调用Object.getPrototypeOf()方法来检索原型的引用；然后搜索原型找到同名函数；最后，设置this绑定并且调用相应的方法。</p>
+<p>上面例子friend.getGreeting()方法的[[HomeObject]]为friend，而friend的原型为person，所以super.getGreeting()等价于person.getGreeting.call(this);</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ES6/" rel="tag"># ES6</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/11/generator-in-es6/" rel="next" title="ES6之生成器(Generator)">
+                <i class="fa fa-chevron-left"></i> ES6之生成器(Generator)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Dong" />
+          <p class="site-author-name" itemprop="name">Dong</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#块级作用域绑定"><span class="nav-number">1.</span> <span class="nav-text">块级作用域绑定</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#var声明及变量提升（Hoisting）机制"><span class="nav-number">1.1.</span> <span class="nav-text">var声明及变量提升（Hoisting）机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#块级声明"><span class="nav-number">1.2.</span> <span class="nav-text">块级声明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#let声明"><span class="nav-number">1.2.1.</span> <span class="nav-text">let声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const声明"><span class="nav-number">1.2.2.</span> <span class="nav-text">const声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#临时死区（Temporal-Dead-Zone）"><span class="nav-number">1.2.3.</span> <span class="nav-text">临时死区（Temporal Dead Zone）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#循环中的块作用域绑定"><span class="nav-number">1.3.</span> <span class="nav-text">循环中的块作用域绑定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#循环中的let声明"><span class="nav-number">1.3.1.</span> <span class="nav-text">循环中的let声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环中const声明"><span class="nav-number">1.3.2.</span> <span class="nav-text">循环中const声明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全局作用域绑定"><span class="nav-number">1.4.</span> <span class="nav-text">全局作用域绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#块级绑定最佳实践的进化"><span class="nav-number">1.5.</span> <span class="nav-text">块级绑定最佳实践的进化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串和正则表达式"><span class="nav-number">2.</span> <span class="nav-text">字符串和正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#更好的Unicode支持"><span class="nav-number">2.1.</span> <span class="nav-text">更好的Unicode支持</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UTF-16码位"><span class="nav-number">2.1.1.</span> <span class="nav-text">UTF-16码位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#codePointAt-方法"><span class="nav-number">2.1.2.</span> <span class="nav-text">codePointAt()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-fromCodePoint-方法"><span class="nav-number">2.1.3.</span> <span class="nav-text">String.fromCodePoint()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#normalize-方法"><span class="nav-number">2.1.4.</span> <span class="nav-text">normalize()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式-u-修饰符"><span class="nav-number">2.1.5.</span> <span class="nav-text">正则表达式 u 修饰符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它字符串变更"><span class="nav-number">2.2.</span> <span class="nav-text">其它字符串变更</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串中的子串识别"><span class="nav-number">2.2.1.</span> <span class="nav-text">字符串中的子串识别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#repeat-方法"><span class="nav-number">2.2.2.</span> <span class="nav-text">repeat()方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它正则表达式语法变更"><span class="nav-number">2.3.</span> <span class="nav-text">其它正则表达式语法变更</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#y-修饰符"><span class="nav-number">2.3.1.</span> <span class="nav-text">y 修饰符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式的复制"><span class="nav-number">2.3.2.</span> <span class="nav-text">正则表达式的复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flags属性"><span class="nav-number">2.3.3.</span> <span class="nav-text">flags属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板字面量"><span class="nav-number">2.4.</span> <span class="nav-text">模板字面量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础语法"><span class="nav-number">2.4.1.</span> <span class="nav-text">基础语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多行字符串"><span class="nav-number">2.4.2.</span> <span class="nav-text">多行字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串占位符"><span class="nav-number">2.4.3.</span> <span class="nav-text">字符串占位符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标签模板"><span class="nav-number">2.4.4.</span> <span class="nav-text">标签模板</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数"><span class="nav-number">3.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#函数形参的默认值"><span class="nav-number">3.1.</span> <span class="nav-text">函数形参的默认值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ES6语法"><span class="nav-number">3.1.1.</span> <span class="nav-text">ES6语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#默认参数值对arguments对象的影响"><span class="nav-number">3.1.2.</span> <span class="nav-text">默认参数值对arguments对象的影响</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#默认参数表达式"><span class="nav-number">3.1.3.</span> <span class="nav-text">默认参数表达式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理无命名参数"><span class="nav-number">3.2.</span> <span class="nav-text">处理无命名参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不定参数"><span class="nav-number">3.2.1.</span> <span class="nav-text">不定参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增强的Function构造函数"><span class="nav-number">3.3.</span> <span class="nav-text">增强的Function构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#展开运算符"><span class="nav-number">3.4.</span> <span class="nav-text">展开运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#name属性"><span class="nav-number">3.5.</span> <span class="nav-text">name属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#明确函数的多重用途"><span class="nav-number">3.6.</span> <span class="nav-text">明确函数的多重用途</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ES5中判断函数被调用的方法"><span class="nav-number">3.6.1.</span> <span class="nav-text">ES5中判断函数被调用的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原属性-new-target"><span class="nav-number">3.6.2.</span> <span class="nav-text">原属性 new.target</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#块级函数"><span class="nav-number">3.7.</span> <span class="nav-text">块级函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#箭头函数"><span class="nav-number">3.8.</span> <span class="nav-text">箭头函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尾部调用优化"><span class="nav-number">3.9.</span> <span class="nav-text">尾部调用优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ES6尾调用优化"><span class="nav-number">3.9.1.</span> <span class="nav-text">ES6尾调用优化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#扩展对象的功能性"><span class="nav-number">4.</span> <span class="nav-text">扩展对象的功能性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象字面量语法扩展"><span class="nav-number">4.1.</span> <span class="nav-text">对象字面量语法扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#属性初始值的简写"><span class="nav-number">4.1.1.</span> <span class="nav-text">属性初始值的简写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象方法的简写"><span class="nav-number">4.1.2.</span> <span class="nav-text">对象方法的简写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可计算属性名"><span class="nav-number">4.1.3.</span> <span class="nav-text">可计算属性名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新增方法"><span class="nav-number">4.2.</span> <span class="nav-text">新增方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-is"><span class="nav-number">4.2.1.</span> <span class="nav-text">Object.is()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-assign"><span class="nav-number">4.2.2.</span> <span class="nav-text">Object.assign()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重复的对象字面量属性"><span class="nav-number">4.3.</span> <span class="nav-text">重复的对象字面量属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自有属性枚举顺序"><span class="nav-number">4.4.</span> <span class="nav-text">自有属性枚举顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增强对象原型"><span class="nav-number">4.5.</span> <span class="nav-text">增强对象原型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#改变对象的原型"><span class="nav-number">4.5.1.</span> <span class="nav-text">改变对象的原型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简化原型访问的Super引用"><span class="nav-number">4.5.2.</span> <span class="nav-text">简化原型访问的Super引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正式的方法定义"><span class="nav-number">4.5.3.</span> <span class="nav-text">正式的方法定义</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dong</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
