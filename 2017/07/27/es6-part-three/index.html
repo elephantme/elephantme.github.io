@@ -1,0 +1,743 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="主要介绍Set和Map的使用方式及API介绍，还着重介绍了Weak Set和Weak Map及其使用场景。">
+<meta name="keywords" content="javascript,es6,webpack,vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解ES6-Set和Map集合">
+<meta property="og:url" content="https://elephantme.github.io/2017/07/27/es6-part-three/index.html">
+<meta property="og:site_name" content="Dong&#39;s Blog">
+<meta property="og:description" content="主要介绍Set和Map的使用方式及API介绍，还着重介绍了Weak Set和Weak Map及其使用场景。">
+<meta property="og:updated_time" content="2017-07-27T01:20:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解ES6-Set和Map集合">
+<meta name="twitter:description" content="主要介绍Set和Map的使用方式及API介绍，还着重介绍了Weak Set和Weak Map及其使用场景。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://elephantme.github.io/2017/07/27/es6-part-three/"/>
+
+
+
+
+
+  <title>深入理解ES6-Set和Map集合 | Dong's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?1a71164e95b5296508c0d1492855a5a0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Dong's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">路漫漫其修远兮，吾将上下而求索</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2017/07/27/es6-part-three/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dong's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入理解ES6-Set和Map集合</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-27T09:16:00+08:00">
+                2017-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>主要介绍Set和Map的使用方式及API介绍，还着重介绍了Weak Set和Weak Map及其使用场景。</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="Set集合与Map集合"><a href="#Set集合与Map集合" class="headerlink" title="Set集合与Map集合"></a>Set集合与Map集合</h1><h2 id="ES5中的Set集合与Map集合"><a href="#ES5中的Set集合与Map集合" class="headerlink" title="ES5中的Set集合与Map集合"></a>ES5中的Set集合与Map集合</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> set = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</div><div class="line"></div><div class="line">set.foo = <span class="literal">true</span>;</div><div class="line"></div><div class="line"><span class="comment">// 检查属性是否存在</span></div><div class="line"><span class="keyword">if</span>(set.foo)&#123;</div><div class="line">  <span class="comment">// 要执行的代码</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面是模拟Set集合，而Map集合只是存储的值不同。</p>
+<h2 id="该解决方案的一些问题"><a href="#该解决方案的一些问题" class="headerlink" title="该解决方案的一些问题"></a>该解决方案的一些问题</h2><h3 id="非字符串类型的key"><a href="#非字符串类型的key" class="headerlink" title="非字符串类型的key"></a>非字符串类型的key</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> map = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</div><div class="line">map[<span class="number">5</span>] = <span class="string">"foo"</span>;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(map[<span class="string">"5"</span>]);   <span class="comment">// "foo"</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> map = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</div><div class="line"><span class="keyword">var</span> key1 = &#123;&#125;,</div><div class="line">  key2 = &#123;&#125;;</div><div class="line"></div><div class="line">map[key1] = <span class="string">"foo"</span>;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(map[key2]);   <span class="comment">// "foo"</span></div></pre></td></tr></table></figure>
+<p>上面例子对象的属性名都会做类型转化，转化为字符串。其中Object会调用其toString()方法，因此key1和key2都得到”[object Object]”。</p>
+<h2 id="ES6中的Set集合"><a href="#ES6中的Set集合" class="headerlink" title="ES6中的Set集合"></a>ES6中的Set集合</h2><p>ES6中的Set类型是一种有序列表（Java中是无序的），其中含有一些相互独立的非重复值，通过Set集合可以快速访问其中的数据，更有效地追踪各种离散值。</p>
+<h3 id="创建Set集合并添加元素"><a href="#创建Set集合并添加元素" class="headerlink" title="创建Set集合并添加元素"></a>创建Set集合并添加元素</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> set = <span class="keyword">new</span> <span class="built_in">Set</span>();</div><div class="line">set.add(<span class="number">5</span>);</div><div class="line">set.add(<span class="string">"5"</span>);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(set.size);     <span class="comment">// 2</span></div></pre></td></tr></table></figure>
+<p>Set 集合中，不会对所存值进行强制类型转换。也可以向Set中添加多个对象，则它们之间彼此保持独立：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> set = <span class="keyword">new</span> <span class="built_in">Set</span>(),</div><div class="line">  key1 = &#123;&#125;,</div><div class="line">  key2 = &#123;&#125;;</div><div class="line"></div><div class="line">set.add(key1);</div><div class="line">set.add(key2);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(set.size);     <span class="comment">// 2</span></div></pre></td></tr></table></figure>
+<p>如果多次调用add()方法并传入相同的值，后续的调用会被忽略。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> set = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>]);</div><div class="line"><span class="built_in">console</span>.log(set.size);     <span class="comment">// 3</span></div></pre></td></tr></table></figure>
+<p><strong>实际上，Set构造函数可以接受所有可迭代对象作为参数，数组、Set集合、Map集合等。</strong></p>
+<h3 id="移除元素"><a href="#移除元素" class="headerlink" title="移除元素"></a>移除元素</h3><p>使用delete()可以移除Set集合中的某一个元素，clear()方法可以移除所有元素。</p>
+<h3 id="Set集合的forEach-方法"><a href="#Set集合的forEach-方法" class="headerlink" title="Set集合的forEach()方法"></a>Set集合的forEach()方法</h3><p>forEach方法的回调函数接收以下3个参数：</p>
+<ul>
+<li>Set集合中下一次索引的位置</li>
+<li>与第一个参数一样的值</li>
+<li>被遍历的Set集合本身</li>
+</ul>
+<p>在Set集合的forEach()方法中，第二个参数也与数组的一样，如果需要在回调函数中使用this引用，则可以将它作为第二个参数传入forEach()函数。</p>
+<h3 id="将Set集合转换为数组"><a href="#将Set集合转换为数组" class="headerlink" title="将Set集合转换为数组"></a>将Set集合转换为数组</h3><p>将数组转化为Set集合的过程很简单，只需给Set构造函数传入数组即可；将Set集合再转回数组同样很简单，可以用展开运算符。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> set = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]),</div><div class="line">  array = [...set];</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(array);     <span class="comment">// [1, 2, 3, 4, 5]</span></div></pre></td></tr></table></figure>
+<h3 id="Weak-Set集合"><a href="#Weak-Set集合" class="headerlink" title="Weak Set集合"></a>Weak Set集合</h3><p>将对象存储在Set的实例与存储在变量中完全一样，只要Set实例中的引用存在，垃圾回收机制就不能释放该对象的内存空间，于是之前提到的Set类型可以被看作是一个强引用的Set集合。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> set = <span class="keyword">new</span> <span class="built_in">Set</span>(),</div><div class="line">  key = &#123;&#125;;</div><div class="line"></div><div class="line">set.add(key);</div><div class="line"><span class="built_in">console</span>.log(set.size);      <span class="comment">// 1</span></div><div class="line"></div><div class="line"><span class="comment">// 移除原始引用</span></div><div class="line">key = <span class="literal">null</span>;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(set.size);      <span class="comment">// 1</span></div><div class="line"></div><div class="line"><span class="comment">// 重新取回原始引用</span></div><div class="line">key = [...set][<span class="number">0</span>];</div></pre></td></tr></table></figure>
+<p>在这个示例中，将变量key设置为null时便清除了对初始对象的引用，但是Set集合却保留了这个引用，仍然可以使用展开运算符将Set集合转换成数组格式并从数组中取出该引用。大部分情况这段代码运行良好，但有时候你会希望当其他引用都不存在时，让Set集合中的这些引用随之消失。例如：在Web页面通过js记录可一些DOM元素，这些元素有可能被另一段脚本移除，而你又不希望自己的代码保留这些DOM元素的最后一个引用。</p>
+<p>为了解决这个问题，ES6中引入了另外一个类型：Weak Set集合（弱引用Set集合）。Weak Set集合只存储对象的弱引用，并且不可以存储原始值；集合中的弱引用如果是对象唯一的引用，则会被回收并释放相应内存。</p>
+<h3 id="创建Weak-Set集合"><a href="#创建Weak-Set集合" class="headerlink" title="创建Weak Set集合"></a>创建Weak Set集合</h3><p>集合支持3个方法：add()、has()和delete()。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> set = <span class="keyword">new</span> <span class="built_in">WeakSet</span>(),</div><div class="line">  key = &#123;&#125;;</div><div class="line"></div><div class="line">set.add(key);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(set.has(key));      <span class="comment">// true</span></div><div class="line"></div><div class="line">selt.delete(key);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(set.has(key));      <span class="comment">// false</span></div></pre></td></tr></table></figure>
+<p>也可以使用构造函数来创建WeakSet，其参数不能为任何原始值，如果包含其他非对象值，程序会抛出错误。</p>
+<h3 id="两种Set的主要区别"><a href="#两种Set的主要区别" class="headerlink" title="两种Set的主要区别"></a>两种Set的主要区别</h3><p><strong>最大的区别是Weak Set保存的是对象值的弱引用。</strong></p>
+<ul>
+<li>在Weak Set实例中，如果向add()、has()、delete()方法传入非对象参数都会导致程序出错。</li>
+<li>Weak Set集合不可迭代</li>
+<li>Weak Set集合不暴露任何迭代器，所以无法通过程序本身来检测其中的内容。</li>
+<li>Weak Set集合不支持forEach()方法。</li>
+<li>Weak Set集合不支持size属性。</li>
+</ul>
+<p>Weak Set集合的功能看似受限，其实这是为了让它能够正确地处理内存中的数据。总之，如果你只需要跟踪对象引用，你更应该使用Weak Set集合而不是普通的Set集合。</p>
+<h2 id="ES6中的Map集合"><a href="#ES6中的Map集合" class="headerlink" title="ES6中的Map集合"></a>ES6中的Map集合</h2><h3 id="Map集合支持的方法"><a href="#Map集合支持的方法" class="headerlink" title="Map集合支持的方法"></a>Map集合支持的方法</h3><ul>
+<li>set()            向集合中添加元素</li>
+<li>get(key)         获取集合中元素</li>
+<li>has(key)         检测是否存在指定的键名</li>
+<li>delete(key)      移除指定的键名</li>
+<li>clear()          清除集合中所有的键值对</li>
+</ul>
+<h3 id="Map集合的初始化方法"><a href="#Map集合的初始化方法" class="headerlink" title="Map集合的初始化方法"></a>Map集合的初始化方法</h3><p>可以向Map 构造函数传入数组来初始化一个Map集合，这一点同样与Set 集合相似。数据中的每个元素都是一个子数组，子数组中包含一个键值对的键名与值两个元素。因此，整个Map集合中包含的全是这样的两元素数组。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>([<span class="string">"name"</span>, <span class="string">"zhangsan"</span>], [<span class="string">"age"</span>, <span class="number">25</span>]);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(map.has(<span class="string">"name"</span>));     <span class="comment">// true</span></div><div class="line"><span class="built_in">console</span>.log(map.has(<span class="string">"age"</span>));      <span class="comment">// true</span></div><div class="line"><span class="built_in">console</span>.log(map.size);            <span class="comment">// 2</span></div></pre></td></tr></table></figure>
+<h3 id="Map集合的forEach-方法"><a href="#Map集合的forEach-方法" class="headerlink" title="Map集合的forEach()方法"></a>Map集合的forEach()方法</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>([<span class="string">"name"</span>, <span class="string">"zhangsan"</span>], [<span class="string">"age"</span>, <span class="number">25</span>]);</div><div class="line"></div><div class="line">map.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">value, key, ownerMap</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(key + <span class="string">" "</span> + value);</div><div class="line">  <span class="built_in">console</span>.log(ownerMap === map);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="Weak-Map集合"><a href="#Weak-Map集合" class="headerlink" title="Weak Map集合"></a>Weak Map集合</h3><p>Weak Set是弱引用Set集合，相对的，Weak Map是弱引用Map集合，也用于存储对象的弱引用。Weak Map集合中的键名必须是一个对象，如果使用非对象键名会报错；集合中保存的是这些对象的弱引用，如果在弱引用之外不存在其他的强引用，引擎的垃圾回收机制会自动回收这个对象，同时也会移除Weak Map集合中的键值对。</p>
+<p>Weak Map集合最大的用途是保存Web页面中的Dom元素。</p>
+<h3 id="Weak-Map集合支持的方法"><a href="#Weak-Map集合支持的方法" class="headerlink" title="Weak Map集合支持的方法"></a>Weak Map集合支持的方法</h3><p>它只支持两个可以操作键值对的方法：has()方法和delete()方法。Weak Map集合与Weak Set集合一样，二者都不支持键名枚举，从而也不支持clear()方法。</p>
+<h3 id="私有数据（Weak-Map实战）"><a href="#私有数据（Weak-Map实战）" class="headerlink" title="私有数据（Weak Map实战）"></a>私有数据（Weak Map实战）</h3><p>一般我们会这么写：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Person = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> privateData = &#123;&#125;,</div><div class="line">    privateId = <span class="number">0</span>;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">    <span class="built_in">Object</span>.defineProperty(<span class="keyword">this</span>, <span class="string">"_id"</span>, &#123;<span class="attr">value</span>: privateId++ &#125;);</div><div class="line"></div><div class="line">    privateData[<span class="keyword">this</span>._id] = &#123;</div><div class="line">      <span class="attr">name</span>: name</div><div class="line">    &#125;;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  Person.prototype.getName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> privateData[<span class="keyword">this</span>._id].name;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> Person;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+<p>这种方法最大的问题是，如果不主动管理，由于无法获知对象实例何时被销毁，因此privateData中的数据就永远不会消失。而使用Weak Map集合就可以解决这个问题：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Person = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> privateData = <span class="keyword">new</span> <span class="built_in">WeakMap</span>();</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>) </span>&#123;</div><div class="line">    privateData.set(<span class="keyword">this</span>, &#123;<span class="attr">name</span>: name&#125;);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  Person.prototype.getName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> privateData.get(<span class="keyword">this</span>).name;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> Person;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+<p>使用Weak Map改造后，当实例销毁Map中的键值对也会相应的移除，可以及时垃圾回收，避免内存浪费。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/24/es6-part-two/" rel="next" title="深入理解ES6-函数和对象扩展">
+                <i class="fa fa-chevron-left"></i> 深入理解ES6-函数和对象扩展
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Dong" />
+          <p class="site-author-name" itemprop="name">Dong</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Set集合与Map集合"><span class="nav-number">1.</span> <span class="nav-text">Set集合与Map集合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ES5中的Set集合与Map集合"><span class="nav-number">1.1.</span> <span class="nav-text">ES5中的Set集合与Map集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#该解决方案的一些问题"><span class="nav-number">1.2.</span> <span class="nav-text">该解决方案的一些问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#非字符串类型的key"><span class="nav-number">1.2.1.</span> <span class="nav-text">非字符串类型的key</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES6中的Set集合"><span class="nav-number">1.3.</span> <span class="nav-text">ES6中的Set集合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Set集合并添加元素"><span class="nav-number">1.3.1.</span> <span class="nav-text">创建Set集合并添加元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除元素"><span class="nav-number">1.3.2.</span> <span class="nav-text">移除元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Set集合的forEach-方法"><span class="nav-number">1.3.3.</span> <span class="nav-text">Set集合的forEach()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将Set集合转换为数组"><span class="nav-number">1.3.4.</span> <span class="nav-text">将Set集合转换为数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Weak-Set集合"><span class="nav-number">1.3.5.</span> <span class="nav-text">Weak Set集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Weak-Set集合"><span class="nav-number">1.3.6.</span> <span class="nav-text">创建Weak Set集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两种Set的主要区别"><span class="nav-number">1.3.7.</span> <span class="nav-text">两种Set的主要区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES6中的Map集合"><span class="nav-number">1.4.</span> <span class="nav-text">ES6中的Map集合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Map集合支持的方法"><span class="nav-number">1.4.1.</span> <span class="nav-text">Map集合支持的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map集合的初始化方法"><span class="nav-number">1.4.2.</span> <span class="nav-text">Map集合的初始化方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map集合的forEach-方法"><span class="nav-number">1.4.3.</span> <span class="nav-text">Map集合的forEach()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Weak-Map集合"><span class="nav-number">1.4.4.</span> <span class="nav-text">Weak Map集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Weak-Map集合支持的方法"><span class="nav-number">1.4.5.</span> <span class="nav-text">Weak Map集合支持的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#私有数据（Weak-Map实战）"><span class="nav-number">1.4.6.</span> <span class="nav-text">私有数据（Weak Map实战）</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dong</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
