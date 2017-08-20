@@ -264,7 +264,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2016/07/31/two-way-bind-beween-angular-and-vue/">
+    <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2016/07/31/master-component-of-vue/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dong">
@@ -283,7 +283,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/07/31/two-way-bind-beween-angular-and-vue/" itemprop="url">理解vue与angular双向绑定的本质</a></h1>
+                <a class="post-title-link" href="/2016/07/31/master-component-of-vue/" itemprop="url">掌握vue中的组件</a></h1>
         
 
         <div class="post-meta">
@@ -353,10 +353,10 @@
 
       
         
-          <p>Vue.js的数据观测实现原理和Angular有着本质的不同。了解Angular的读者可能知道，Angular的数据观测采用的是脏检查（dirty checking）机制。每一个指令都会有一个对应的用来观测数据的对象，叫做watcher；一个作用域中会有很多个watcher。每当界面需要更新时，Angular会遍历当前作用域里的所有watcher，对它们一一求值，然后和之前保存的旧值进行比较。如果求值的结果变化了，就触发对应的更新，这个过程叫做digest cycle。脏检查有两个问题：</p>
+          <p>定义组件的主要目的就是为了代码复用。在实际中，组件之间存在嵌套关系，难点就是弄清楚他们之间是怎么通信的。<br>vue借鉴了react定义组件的方式，也提倡单项绑定。因为单项绑定的数据流很清晰，很容易维护。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/07/31/two-way-bind-beween-angular-and-vue/#more" rel="contents">
+            <a class="btn" href="/2016/07/31/master-component-of-vue/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1053,122 +1053,6 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2016/07/10/learn-how-to-inherit-in-javascript/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dong's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/07/10/learn-how-to-inherit-in-javascript/" itemprop="url">探索Javascript中的继承</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-10T00:00:00+08:00">
-                2016-07-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="1-原型链"><a href="#1-原型链" class="headerlink" title="1. 原型链"></a>1. 原型链</h2><p>通过原型链可以作为实现继承的主要方法。其基本思想是利用原型让一个引用类型继承另一个引用类型的属性和方法。我们知道每个实例都包括指向原型对象的内部指针，如果我们将该实例直接赋值给另一个原型对象，会发生什么呢？显然此时该原型对象将包括一个指向另一个原型的指针，以此类推下去，就构成了实例与原型的链条。这就是所谓原型链的基本概念。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/07/10/learn-how-to-inherit-in-javascript/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2016/07/10/usefull-points-about-closure/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1245,6 +1129,122 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2016/07/10/usefull-points-about-closure/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2016/07/10/learn-how-to-inherit-in-javascript/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dong's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/07/10/learn-how-to-inherit-in-javascript/" itemprop="url">探索Javascript中的继承</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-10T00:00:00+08:00">
+                2016-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="1-原型链"><a href="#1-原型链" class="headerlink" title="1. 原型链"></a>1. 原型链</h2><p>通过原型链可以作为实现继承的主要方法。其基本思想是利用原型让一个引用类型继承另一个引用类型的属性和方法。我们知道每个实例都包括指向原型对象的内部指针，如果我们将该实例直接赋值给另一个原型对象，会发生什么呢？显然此时该原型对象将包括一个指向另一个原型的指针，以此类推下去，就构成了实例与原型的链条。这就是所谓原型链的基本概念。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/07/10/learn-how-to-inherit-in-javascript/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

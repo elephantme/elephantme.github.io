@@ -1497,7 +1497,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2016/07/31/master-component-of-vue/">
+    <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2016/07/31/two-way-bind-beween-angular-and-vue/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dong">
@@ -1516,7 +1516,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/07/31/master-component-of-vue/" itemprop="url">掌握vue中的组件</a></h1>
+                <a class="post-title-link" href="/2016/07/31/two-way-bind-beween-angular-and-vue/" itemprop="url">理解vue与angular双向绑定的本质</a></h1>
         
 
         <div class="post-meta">
@@ -1586,10 +1586,10 @@
 
       
         
-          <p>定义组件的主要目的就是为了代码复用。在实际中，组件之间存在嵌套关系，难点就是弄清楚他们之间是怎么通信的。<br>vue借鉴了react定义组件的方式，也提倡单项绑定。因为单项绑定的数据流很清晰，很容易维护。</p>
+          <p>Vue.js的数据观测实现原理和Angular有着本质的不同。了解Angular的读者可能知道，Angular的数据观测采用的是脏检查（dirty checking）机制。每一个指令都会有一个对应的用来观测数据的对象，叫做watcher；一个作用域中会有很多个watcher。每当界面需要更新时，Angular会遍历当前作用域里的所有watcher，对它们一一求值，然后和之前保存的旧值进行比较。如果求值的结果变化了，就触发对应的更新，这个过程叫做digest cycle。脏检查有两个问题：</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/07/31/master-component-of-vue/#more" rel="contents">
+            <a class="btn" href="/2016/07/31/two-way-bind-beween-angular-and-vue/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
