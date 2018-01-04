@@ -264,6 +264,397 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2018/01/04/learn-vue-source-implement-simple-directive/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dong's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/04/learn-vue-source-implement-simple-directive/" itemprop="url">【vue源码】简单实现directive功能</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T22:15:33+08:00">
+                2018-01-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue/" itemprop="url" rel="index">
+                    <span itemprop="name">vue</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>2018年首个计划是学习vue源码，查阅了一番资料之后，决定从第一个commit开始看起，这将是一场持久战！本篇介绍directive的简单实现，主要学习其实现的思路及代码的设计（directive和filter扩展起来非常方便，符合设计模式中的<code>开闭原则</code>）。</p>
+</blockquote>
+<h2 id="构思API"><a href="#构思API" class="headerlink" title="构思API"></a>构思API</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span> <span class="attr">sd-on-click</span>=<span class="string">"toggle | .button"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">sd-text</span>=<span class="string">"msg | capitalize"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">sd-class-red</span>=<span class="string">"error"</span> <span class="attr">sd-text</span>=<span class="string">"content"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"button"</span>&gt;</span>Toggle class<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> app = Seed.create(&#123;</div><div class="line">    <span class="attr">id</span>: <span class="string">'app'</span>,</div><div class="line">    <span class="attr">scope</span>: &#123;</div><div class="line">        <span class="attr">msg</span>: <span class="string">'hello'</span>,</div><div class="line">        <span class="attr">content</span>: <span class="string">'world'</span>,</div><div class="line">        <span class="attr">error</span>: <span class="literal">true</span>,</div><div class="line">        <span class="attr">toggle</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            app.scope.error = !app.scope.error;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>实现功能够简单吧–将scope中的数据绑定到app中。</p>
+<h2 id="核心逻辑设计"><a href="#核心逻辑设计" class="headerlink" title="核心逻辑设计"></a>核心逻辑设计</h2><h3 id="指令格式"><a href="#指令格式" class="headerlink" title="指令格式"></a>指令格式</h3><p>以<code>sd-text=&quot;msg | capitalize&quot;</code>为例说明：</p>
+<ol>
+<li><code>sd</code>为统一的前缀标识</li>
+<li><code>text</code>为指令名称</li>
+<li><code>capitalize</code>为过滤器名称</li>
+</ol>
+<p>其中 <code>|</code> 后面为过滤器，可以添加多个。<code>sd-class-red</code>中的red为参数。</p>
+<h3 id="代码结构介绍"><a href="#代码结构介绍" class="headerlink" title="代码结构介绍"></a>代码结构介绍</h3><p>main.js 入口文件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Seed构造函数</span></div><div class="line"><span class="keyword">const</span> Seed = <span class="function"><span class="keyword">function</span>(<span class="params">opts</span>) </span>&#123;</div><div class="line">    </div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 对外暴露的API</span></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">    <span class="attr">create</span>: <span class="function"><span class="keyword">function</span>(<span class="params">opts</span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Seed(opts);</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>directives.js </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">    <span class="attr">text</span>: <span class="function"><span class="keyword">function</span>(<span class="params">el, value</span>) </span>&#123;</div><div class="line">        el.textContent = value || <span class="string">''</span>;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>filters.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">    <span class="attr">capitalize</span>: <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</div><div class="line">        value = value.toString();</div><div class="line">        <span class="keyword">return</span> value.charAt(<span class="number">0</span>).toUpperCase() + value.slice(<span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>就这三个文件，其中directives和filters都是配置文件，很易于扩展。</p>
+<p>实现的大致思路如下：</p>
+<ol>
+<li>在Seed实例创建的时候会依次解析el容器中node节点的指令</li>
+<li>将指令解析结果封装为指令对象，结构为：</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>attr</td>
+<td>原始属性，如<code>sd-text</code></td>
+<td>String</td>
+</tr>
+<tr>
+<td>key</td>
+<td>对应scope对象中的属性名称</td>
+<td>String</td>
+</tr>
+<tr>
+<td>filters</td>
+<td>过滤器名称列表</td>
+<td>Array</td>
+</tr>
+<tr>
+<td>definition</td>
+<td>该指令的定义，如text对应的函数</td>
+<td>Function</td>
+</tr>
+<tr>
+<td>argument</td>
+<td>从attr中解析出来的参数（只支持一个参数）</td>
+<td>String</td>
+</tr>
+<tr>
+<td>update</td>
+<td>更新directive时调用<code>typeof def === &#39;function&#39; ? def : def.update</code></td>
+<td>Function</td>
+</tr>
+<tr>
+<td>bind</td>
+<td>如果directive中定义了bind方法，则在<code>bindDirective</code>中会调用</td>
+<td>Function</td>
+</tr>
+<tr>
+<td>el</td>
+<td>存储当前element元素</td>
+<td>Element</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>想办法执行指令的update方法即可，该插件使用了<code>Object.defineProperty</code>来定义scope中的每个属性，在其setter中触发指令的update方法。</li>
+</ol>
+<h2 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> prefix = <span class="string">'sd'</span>;</div><div class="line"><span class="keyword">const</span> Directives = <span class="built_in">require</span>(<span class="string">'./directives'</span>);</div><div class="line"><span class="keyword">const</span> Filters = <span class="built_in">require</span>(<span class="string">'./filters'</span>);</div><div class="line"><span class="comment">// 结果为[sd-text], [sd-class], [sd-on]的字符串</span></div><div class="line"><span class="keyword">const</span> selector = <span class="built_in">Object</span>.keys(Directives).map(<span class="function">(<span class="params">name</span>) =&gt;</span> <span class="string">`[<span class="subst">$&#123;prefix&#125;</span>-<span class="subst">$&#123;name&#125;</span>]`</span>).join(<span class="string">','</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> Seed = <span class="function"><span class="keyword">function</span>(<span class="params">opts</span>) </span>&#123;</div><div class="line">    <span class="keyword">const</span> self = <span class="keyword">this</span>,</div><div class="line">        root = <span class="keyword">this</span>.el = <span class="built_in">document</span>.getElementById(opts.id),</div><div class="line">        <span class="comment">// 筛选出el下所能支持的directive的nodes列表</span></div><div class="line">        els = <span class="keyword">this</span>.el.querySelectorAll(selector),</div><div class="line">        bindings = &#123;&#125;;</div><div class="line"></div><div class="line">    <span class="keyword">this</span>.scope = &#123;&#125;;</div><div class="line"></div><div class="line">    <span class="comment">// 解析节点</span></div><div class="line">    [].forEach.call(els, processNode);</div><div class="line">    <span class="comment">// 解析根节点</span></div><div class="line">    processNode(root);</div><div class="line"></div><div class="line">    <span class="comment">// 给scope赋值，触发setter方法，此时会调用与其相对应的directive的update方法</span></div><div class="line">    <span class="built_in">Object</span>.keys(bindings).forEach(<span class="function">(<span class="params">key</span>) =&gt;</span> &#123;</div><div class="line">        <span class="keyword">this</span>.scope[key] = opts.scope[key];</div><div class="line">    &#125;);</div><div class="line">  </div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">processNode</span>(<span class="params">el</span>) </span>&#123;</div><div class="line">        cloneAttributes(el.attributes).forEach(<span class="function">(<span class="params">attr</span>) =&gt;</span> &#123;</div><div class="line">            <span class="keyword">const</span> directive = parseDirective(attr);</div><div class="line">            <span class="keyword">if</span> (directive) &#123;</div><div class="line">                bindDirective(self, el, bindings, directive);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>可以看到核心方法<code>processNode</code>主要做了两件事一个是<code>parseDirective</code>，另一个是<code>bindDirective</code>。</p>
+<p>先来看看<code>parseDirective</code>方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">parseDirective</span>(<span class="params">attr</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (attr.name.indexOf(prefix) == <span class="number">-1</span>) <span class="keyword">return</span>;</div><div class="line"></div><div class="line">    <span class="comment">// 解析属性名称获取directive</span></div><div class="line">    <span class="keyword">const</span> noprefix = attr.name.slice(prefix.length + <span class="number">1</span>),</div><div class="line">        argIndex = noprefix.indexOf(<span class="string">'-'</span>),</div><div class="line">        dirname = argIndex === <span class="number">-1</span> ? noprefix : noprefix.slice(<span class="number">0</span>, argIndex),</div><div class="line">        arg = argIndex === <span class="number">-1</span> ? <span class="literal">null</span> : noprefix.slice(argIndex + <span class="number">1</span>),</div><div class="line">        def = Directives[dirname]</div><div class="line"></div><div class="line">    <span class="comment">// 解析属性值获取filters</span></div><div class="line">    <span class="keyword">const</span> exp = attr.value,</div><div class="line">        pipeIndex = exp.indexOf(<span class="string">'|'</span>),</div><div class="line">        key = (pipeIndex === <span class="number">-1</span> ? exp : exp.slice(<span class="number">0</span>, pipeIndex)).trim(),</div><div class="line">        filters = pipeIndex === <span class="number">-1</span> ? <span class="literal">null</span> : exp.slice(pipeIndex + <span class="number">1</span>).split(<span class="string">'|'</span>).map(<span class="function">(<span class="params">filterName</span>) =&gt;</span> filterName.trim());</div><div class="line"></div><div class="line">    <span class="keyword">return</span> def ? &#123;</div><div class="line">        <span class="attr">attr</span>: attr,</div><div class="line">        <span class="attr">key</span>: key,</div><div class="line">        <span class="attr">filters</span>: filters,</div><div class="line">        <span class="attr">argument</span>: arg,</div><div class="line">        <span class="attr">definition</span>: Directives[dirname],</div><div class="line">        <span class="attr">update</span>: <span class="keyword">typeof</span> def === <span class="string">'function'</span> ? def : def.update</div><div class="line">    &#125; : <span class="literal">null</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以<code>sd-on-click=&quot;toggle | .button&quot;</code>为例来说明，其中attr对象的name为<code>sd-on-click</code>，value为<code>toggle | .button</code>，最终解析结果为：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"attr"</span>: attr,</div><div class="line">  <span class="attr">"key"</span>: <span class="string">"toggle"</span>,</div><div class="line">  <span class="attr">"filters"</span>: [<span class="string">".button"</span>],</div><div class="line">  <span class="attr">"argument"</span>: <span class="string">"click"</span>,</div><div class="line">  <span class="attr">"definition"</span>: &#123;<span class="attr">"on"</span>: &#123;&#125;&#125;,</div><div class="line">  <span class="attr">"update"</span>: function()&#123;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>紧接着调用<code>bindDirective</code>方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 数据绑定</div><div class="line"> * @param  &#123;Seed&#125; seed        Seed实例对象</div><div class="line"> * @param  &#123;Element&#125; el       当前node节点</div><div class="line"> * @param  &#123;Object&#125; bindings  数据绑定存储对象</div><div class="line"> * @param  &#123;Object&#125; directive 指令解析结果</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">bindDirective</span>(<span class="params">seed, el, bindings, directive</span>) </span>&#123;</div><div class="line">    <span class="comment">// 移除指令属性</span></div><div class="line">    el.removeAttribute(directive.attr.name);</div><div class="line">    <span class="comment">// 数据属性</span></div><div class="line">    <span class="keyword">const</span> key = directive.key;</div><div class="line">    <span class="keyword">let</span> binding = bindings[key];</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (!binding) &#123;</div><div class="line">        bindings[key] = binding = &#123;</div><div class="line">            <span class="attr">value</span>: <span class="literal">undefined</span>,</div><div class="line">            <span class="attr">directives</span>: []  <span class="comment">// 与该数据相关的指令</span></div><div class="line">        &#125;;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    directive.el = el;</div><div class="line">    binding.directives.push(directive);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (!seed.scope.hasOwnProperty(key)) &#123;</div><div class="line">        bindAccessors(seed, key, binding);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 重写scope西乡属性的getter和setter</div><div class="line"> * @param  &#123;Seed&#125; seed    Seed实例</div><div class="line"> * @param  &#123;String&#125; key     对象属性即opts.scope中的属性</div><div class="line"> * @param  &#123;Object&#125; binding 数据绑定关系对象</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">bindAccessors</span>(<span class="params">seed, key, binding</span>) </span>&#123;</div><div class="line">    <span class="built_in">Object</span>.defineProperty(seed.scope, key, &#123;</div><div class="line">        <span class="attr">get</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> binding.value;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">set</span>: <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</div><div class="line">            binding.value = value;</div><div class="line">            <span class="comment">// 触发directive</span></div><div class="line">            binding.directives.forEach(<span class="function">(<span class="params">directive</span>) =&gt;</span> &#123;</div><div class="line">                <span class="comment">// 如果有过滤器则先执行过滤器</span></div><div class="line">                <span class="keyword">if</span> (<span class="keyword">typeof</span> value !== <span class="string">'undefined'</span> &amp;&amp; directive.filters) &#123;</div><div class="line">                    value = applyFilters(value, directive);</div><div class="line">                &#125;</div><div class="line">                <span class="comment">// 调用update方法</span></div><div class="line">                directive.update(directive.el, value, directive.argument, directive);</div><div class="line">            &#125;);</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 调用filters依次处理value</div><div class="line"> * @param  &#123;任意类型&#125; value      数据值</div><div class="line"> * @param  &#123;Object&#125; directive  解析出来的指令对象</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">applyFilters</span>(<span class="params">value, directive</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (directive.definition.customFilter) &#123;</div><div class="line">        <span class="keyword">return</span> directive.definition.customFilter(value, directive.filters);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        directive.filters.forEach(<span class="function">(<span class="params">name</span>) =&gt;</span> &#123;</div><div class="line">            <span class="keyword">if</span> (Filters[name]) &#123;</div><div class="line">                value = Filters[name](value);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        <span class="keyword">return</span> value;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中的bindings存放了数据和指令的关系，该对象中的key为opts.scope中的属性，value为Object，如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"msg"</span>: &#123;</div><div class="line">    <span class="attr">"value"</span>: undefined,</div><div class="line">    <span class="attr">"directives"</span>: [] // 上面介绍的directive对象</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>数据与directive建立好关系之后，<code>bindAccessors</code>中为seed的scope对象的属性重新定义了getter和setter，其中setter会调用指令update方法，到此就已经完事具备了。</p>
+<p>Seed构造函数在实例化的最后会迭代bindings中的key，然后从opts.scope找到对应的value，<strong>赋值给了scope对象，此时setter中的update就触发执行了。</strong></p>
+<p>下面再看一下<code>sd-on</code>指令的定义：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">on</span>: &#123;</div><div class="line">      <span class="attr">update</span>: <span class="function"><span class="keyword">function</span>(<span class="params">el, handler, event, directive</span>) </span>&#123;</div><div class="line">          <span class="keyword">if</span> (!directive.handlers) &#123;</div><div class="line">              directive.handlers = &#123;&#125;;</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">const</span> handlers = directive.handlers;</div><div class="line">          <span class="keyword">if</span> (handlers[event]) &#123;</div><div class="line">              el.removeEventListener(event, handlers[event]);</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">if</span> (handler) &#123;</div><div class="line">              handler = handler.bind(el);</div><div class="line">              el.addEventListener(event, handler);</div><div class="line">              handlers[event] = handler;</div><div class="line">          &#125;</div><div class="line">      &#125;,</div><div class="line">      <span class="attr">customFilter</span>: <span class="function"><span class="keyword">function</span>(<span class="params">handler, selectors</span>) </span>&#123;</div><div class="line">          <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">              <span class="keyword">const</span> match = selectors.every(<span class="function">(<span class="params">selector</span>) =&gt;</span> e.target.matches(selector));</div><div class="line">              <span class="keyword">if</span> (match) &#123;</div><div class="line">                  handler.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</div><div class="line">              &#125;</div><div class="line">          &#125;</div><div class="line">      &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>发现它有customFilter，其实在<code>applyFilters</code>中就是针对该指令做的一个单独的判断，其中的selectors就是[“.button”]，最终返回一个匿名函数（事件监听函数），该匿名函数当做value传递给update方法，被其handler接收，update方法处理的是事件的绑定。这里其实实现的是事件的代理功能，customFilter中将handler包装一层作为事件的监听函数，同时还实现了事件的代理，设计的比较巧妙！</p>
+<p>作者尤小右为之取名<code>seed</code>寓意深刻啊，vue就是在这最初的代码逐步成长起来的，如今已然成为一颗参天大树了。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2017/11/16/you-donot-know-js/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dong's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/16/you-donot-know-js/" itemprop="url">作用域是什么</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-16T23:51:04+08:00">
+                2017-11-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/你不知道的Js/" itemprop="url" rel="index">
+                    <span itemprop="name">你不知道的Js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="作用域是什么"><a href="#作用域是什么" class="headerlink" title="作用域是什么"></a>作用域是什么</h1><h2 id="编译原理"><a href="#编译原理" class="headerlink" title="编译原理"></a>编译原理</h2><blockquote>
+<p>传统编译语言的流程中，程序中的一段代码在执行之前会经历三个步骤，统称为“编译”。</p>
+</blockquote>
+<ol>
+<li>分词/词法分析<br>将字符组成的字符串分解成有意义的代码块。</li>
+<li>解析/语法分析<br>这个过程是将词法单元流（数组）转换成一个由元素逐级嵌套所组成的代表了程序语法结构的树，这个树被称为“抽象语法树（Abstract Syntax Tree，AST）”。</li>
+<li>代码生成<br>将AST转换为可执行的代码，这个过程与语言和目标平台息息相关。</li>
+</ol>
+<p>JavaScript引擎不会有大量时间用来进行优化，因为它的编译过程不是发生在构建之前的，而是发生在代码执行前的几微妙（甚至更短）的时间内。</p>
+<p>简单地说，任何JavaScript代码片段在执行前都进行编译（通常就在执行前）。</p>
+<h2 id="理解作用域"><a href="#理解作用域" class="headerlink" title="理解作用域"></a>理解作用域</h2><p>编程语言最基本功能就是可以存储变量当中的值，后续还可以继续访问或进行修改。语言需要设计一套规则来存储变量，方便查找这些变量，这套规则就成为作用域。</p>
+<p>变量的赋值操作会执行两个动作，首先编译器会在当前作用域中生成一个变量（如果之前没有生成过），然后在运行时引擎会在作用域中查找该变量，如果能找到就会对它赋值，否则会抛出一个异常！</p>
+<p><strong>LHS和RHS查询</strong></p>
+<p>LHS是查找变量容器本身，RHS是要得到变量的值。下面看一个例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(a);</div><div class="line">&#125;</div><div class="line">foo(<span class="number">2</span>);</div></pre></td></tr></table></figure>
+<ol>
+<li>foo函数调用需要对foo进行RHS查询，引擎会问作用域是否有foo。</li>
+<li>2赋值给foo形参a之前，需要对a进行LHS查询。</li>
+<li>console对象进行的是RHS查询，并且检查是否有一个叫log的方法。</li>
+<li>最后对a进行RHS查询得到2，程序输出。</li>
+</ol>
+<h3 id="作用域嵌套"><a href="#作用域嵌套" class="headerlink" title="作用域嵌套"></a>作用域嵌套</h3><p>当一个块或函数嵌套在另一个块或函数中时，就发生了作用域嵌套。因此，在当前作用域中无法找到某个变量时，引擎会在外层嵌套的作用与众继续查找，知道找到该变量，或抵达最外层的作用域为止。</p>
+<h3 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h3><p>为什么区分LHS和RHS是一件重要的事情？</p>
+<p>因为在变量还没有声明的情况下，这两种查询的行为是不一样的。考虑如下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(a + b);</div><div class="line">  b = a;</div><div class="line">&#125;</div><div class="line">foo(<span class="number">2</span>);</div></pre></td></tr></table></figure>
+<p>第一次对b进行RHS查询时是无法找到该变量的。也就是说，这是一个“未声明”的变量。</p>
+<p>如果RHS查询在所有嵌套的作用域中都找不到所需的变量，引擎会抛出ReferenceError异常。</p>
+<p>而当引擎执行LHS查询时，如果在顶层（全局作用域）中也无法找到目标变量，全局作用域会创建一个具有该名称的变量，并将其返还给引擎（非严格模式下）。</p>
+<p>严格模式下LHS对找不到变量的处理方式和RHS一样，都会抛出ReferenceError异常。</p>
+<p>ReferenceError同作用域判别失败相关，TypeError是作用域判别成功了，但是对结果的操作是非法不合理的，如引用null或undefined中的属性值。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2017/08/24/template-string/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1330,286 +1721,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2017/08/02/es6-class/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dong's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/02/es6-class/" itemprop="url">深入理解ES6-类</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-02T00:19:30+08:00">
-                2017-08-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ES6/" itemprop="url" rel="index">
-                    <span itemprop="name">ES6</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>大多面向对象的编程语言都支持类和类继承的特性，而JavaScript却不支持这些特性，直到ES6。本篇会先介绍ES5如何实现类似的类特性，然后介绍ES6中的类。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/02/es6-class/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://elephantme.github.io/2017/07/27/es6-part-three/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dong's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/27/es6-part-three/" itemprop="url">深入理解ES6-Set和Map集合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-27T09:16:00+08:00">
-                2017-07-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ES6/" itemprop="url" rel="index">
-                    <span itemprop="name">ES6</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>主要介绍Set和Map的使用方式及API介绍，还着重介绍了Weak Set和Weak Map及其使用场景。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/07/27/es6-part-three/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1659,7 +1770,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1670,7 +1781,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1723,7 +1834,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
