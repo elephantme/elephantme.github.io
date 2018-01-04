@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="2018年首个计划是学习vue源码，查阅了一番资料之后，决定从第一个commit开始看起，这将是一场持久战！本篇介绍directive的简单实现，主要学习其实现的思路及代码的设计（directive和filter扩展起来非常方便，符合设计模式中的开闭原则）。  构思API12345&amp;lt;div id=&quot;app&quot; sd-on-click=&quot;toggle | .button&quot;&amp;gt;    &amp;lt">
+<meta name="description" content="2018年首个计划是学习vue源码，查阅了一番资料之后，决定从第一个commit开始看起，这将是一场持久战！本篇介绍directive的简单实现，主要学习其实现的思路及代码的设计（directive和filter扩展起来非常方便，符合设计模式中的开闭原则）。">
 <meta name="keywords" content="javascript,es6,webpack,vue">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【vue源码】简单实现directive功能">
 <meta property="og:url" content="https://elephantme.github.io/2018/01/04/learn-vue-source-implement-simple-directive/index.html">
 <meta property="og:site_name" content="Dong&#39;s Blog">
-<meta property="og:description" content="2018年首个计划是学习vue源码，查阅了一番资料之后，决定从第一个commit开始看起，这将是一场持久战！本篇介绍directive的简单实现，主要学习其实现的思路及代码的设计（directive和filter扩展起来非常方便，符合设计模式中的开闭原则）。  构思API12345&amp;lt;div id=&quot;app&quot; sd-on-click=&quot;toggle | .button&quot;&amp;gt;    &amp;lt">
-<meta property="og:updated_time" content="2018-01-04T17:19:45.000Z">
+<meta property="og:description" content="2018年首个计划是学习vue源码，查阅了一番资料之后，决定从第一个commit开始看起，这将是一场持久战！本篇介绍directive的简单实现，主要学习其实现的思路及代码的设计（directive和filter扩展起来非常方便，符合设计模式中的开闭原则）。">
+<meta property="og:updated_time" content="2018-01-04T17:22:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【vue源码】简单实现directive功能">
-<meta name="twitter:description" content="2018年首个计划是学习vue源码，查阅了一番资料之后，决定从第一个commit开始看起，这将是一场持久战！本篇介绍directive的简单实现，主要学习其实现的思路及代码的设计（directive和filter扩展起来非常方便，符合设计模式中的开闭原则）。  构思API12345&amp;lt;div id=&quot;app&quot; sd-on-click=&quot;toggle | .button&quot;&amp;gt;    &amp;lt">
+<meta name="twitter:description" content="2018年首个计划是学习vue源码，查阅了一番资料之后，决定从第一个commit开始看起，这将是一场持久战！本篇介绍directive的简单实现，主要学习其实现的思路及代码的设计（directive和filter扩展起来非常方便，符合设计模式中的开闭原则）。">
 
 
 
@@ -355,6 +355,7 @@
         <blockquote>
 <p>2018年首个计划是学习vue源码，查阅了一番资料之后，决定从第一个commit开始看起，这将是一场持久战！本篇介绍directive的简单实现，主要学习其实现的思路及代码的设计（directive和filter扩展起来非常方便，符合设计模式中的<code>开闭原则</code>）。</p>
 </blockquote>
+<a id="more"></a>
 <h2 id="构思API"><a href="#构思API" class="headerlink" title="构思API"></a>构思API</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span> <span class="attr">sd-on-click</span>=<span class="string">"toggle | .button"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">sd-text</span>=<span class="string">"msg | capitalize"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">sd-class-red</span>=<span class="string">"error"</span> <span class="attr">sd-text</span>=<span class="string">"content"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"button"</span>&gt;</span>Toggle class<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> app = Seed.create(&#123;</div><div class="line">    <span class="attr">id</span>: <span class="string">'app'</span>,</div><div class="line">    <span class="attr">scope</span>: &#123;</div><div class="line">        <span class="attr">msg</span>: <span class="string">'hello'</span>,</div><div class="line">        <span class="attr">content</span>: <span class="string">'world'</span>,</div><div class="line">        <span class="attr">error</span>: <span class="literal">true</span>,</div><div class="line">        <span class="attr">toggle</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            app.scope.error = !app.scope.error;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>实现功能够简单吧–将scope中的数据绑定到app中。</p>
